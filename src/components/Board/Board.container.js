@@ -208,7 +208,8 @@ export class BoardContainer extends Component {
     isCbuilderBoard: false,
     pinDialogOpen: false,
     pinAttempt: '',
-    pinError: false
+    pinError: false,
+    temporaryOutputBoardOpen: false
   };
   constructor(props) {
     super(props);
@@ -325,6 +326,14 @@ export class BoardContainer extends Component {
     const { board } = this.props;
     if (board && prevProps.board && board.isFixed !== prevProps.board.isFixed) {
       this.setState({ isFixedBoard: board.isFixed });
+    }
+
+    if (
+      this.state.temporaryOutputBoardOpen &&
+      prevProps.output !== this.props.output &&
+      !this.getTemporaryOutputTiles().length
+    ) {
+      this.closeTemporaryOutputBoard();
     }
   }
 
@@ -721,6 +730,10 @@ export class BoardContainer extends Component {
   };
 
   handleLayoutChange = (currentLayout, layouts) => {
+    if (this.state.temporaryOutputBoardOpen) {
+      return;
+    }
+
     const { updateBoard, replaceBoard, board, navigationSettings } = this.props;
     currentLayout.sort((a, b) => {
       if (a.y === b.y) {
@@ -841,6 +854,16 @@ export class BoardContainer extends Component {
       ...clickedTile,
       label: resolveTileLabel(clickedTile, this.props.intl)
     };
+
+    if (this.state.temporaryOutputBoardOpen) {
+      const { speak } = this.props;
+      const toSpeak = tile.vocalization || tile.label;
+      if (toSpeak) {
+        speak(toSpeak);
+      }
+      return;
+    }
+
     if (this.state.isSelecting) {
       this.toggleTileSelect(tile.id);
       return;
@@ -1235,6 +1258,11 @@ export class BoardContainer extends Component {
   }
 
   onRequestPreviousBoard = () => {
+    if (this.state.temporaryOutputBoardOpen) {
+      this.closeTemporaryOutputBoard();
+      return;
+    }
+
     this.props.previousBoard();
     this.scrollToTop();
   };
@@ -1613,6 +1641,46 @@ export class BoardContainer extends Component {
     }
   };
 
+  openTemporaryOutputBoard = () => {
+    const outputTiles = this.getTemporaryOutputTiles();
+
+    if (!outputTiles.length) {
+      return;
+    }
+
+    this.setState({
+      temporaryOutputBoardOpen: true,
+      isSelecting: false,
+      selectedTileIds: []
+    });
+  };
+
+  closeTemporaryOutputBoard = () => {
+    this.setState({
+      temporaryOutputBoardOpen: false
+    });
+  };
+
+  getTemporaryOutputTiles = () => {
+    return this.props.output
+      .filter(tile => tile && tile.type !== 'live')
+      .map((tile, index) => ({
+        ...tile,
+        id: `temporary-output-${tile.id || index}-${index}`,
+        loadBoard: null,
+        linkedBoard: false
+      }));
+  };
+
+  getTemporaryOutputBoard = () => ({
+    id: 'temporary-output-board',
+    name: 'Selección',
+    hidden: false,
+    isPublic: false,
+    isFixed: false,
+    tiles: this.getTemporaryOutputTiles()
+  });
+
   render() {
     const {
       navHistory,
@@ -1632,7 +1700,12 @@ export class BoardContainer extends Component {
       );
     }
 
-    const disableBackButton = navHistory.length === 1;
+    const temporaryOutputBoardOpen = this.state.temporaryOutputBoardOpen;
+    const boardToRender = temporaryOutputBoardOpen
+      ? this.getTemporaryOutputBoard()
+      : board;
+    const disableBackButton =
+      !temporaryOutputBoardOpen && navHistory.length === 1;
     const editingTiles = this.state.tileEditorOpen
       ? this.state.selectedTileIds.map(selectedTileId => {
           const tiles = board.tiles.filter(tile => {
@@ -1646,17 +1719,19 @@ export class BoardContainer extends Component {
     return (
       <Fragment>
         <Board
-          board={board}
+          board={boardToRender}
           intl={this.props.intl}
           scannerSettings={this.props.scannerSettings}
           deactivateScanner={this.props.deactivateScanner}
           disableBackButton={disableBackButton}
           userData={this.props.userData}
-          isLocked={this.state.isLocked}
+          isLocked={temporaryOutputBoardOpen || this.state.isLocked}
           isSaving={this.state.isSaving}
-          isSelecting={this.state.isSelecting}
+          isSelecting={!temporaryOutputBoardOpen && this.state.isSelecting}
           isSelectAll={this.state.isSelectAll}
-          isFixedBoard={this.state.isFixedBoard}
+          isFixedBoard={
+            temporaryOutputBoardOpen ? false : this.state.isFixedBoard
+          }
           isRootBoardTourEnabled={this.props.isRootBoardTourEnabled}
           isSymbolSearchTourEnabled={this.props.isSymbolSearchTourEnabled}
           isUnlockedTourEnabled={this.props.isUnlockedTourEnabled}
@@ -1686,7 +1761,9 @@ export class BoardContainer extends Component {
           onAddRemoveColumn={this.handleAddRemoveColumn}
           onAddRemoveRow={this.handleAddRemoveRow}
           onTileDrop={this.handleTileDrop}
-          onLayoutChange={this.handleLayoutChange}
+          onLayoutChange={
+            temporaryOutputBoardOpen ? undefined : this.handleLayoutChange
+          }
           disableTour={this.props.disableTour}
           onCopyTiles={this.handleCopyTiles}
           onPasteTiles={this.handlePasteTiles}
@@ -1698,6 +1775,7 @@ export class BoardContainer extends Component {
           changeDefaultBoard={this.props.changeDefaultBoard}
           improvedPhrase={improvedPhrase}
           speak={speak}
+          onOpenTemporaryOutputBoard={this.openTemporaryOutputBoard}
         />
         <Dialog
           open={!!this.state.copyPublicBoard && !isPremiumRequiredModalOpen}

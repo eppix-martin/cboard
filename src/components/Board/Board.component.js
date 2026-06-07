@@ -79,6 +79,7 @@ export class Board extends Component {
      * Callback fired when requesting to travel and load root board
      */
     onRequestToRootBoard: PropTypes.func,
+    onOpenTemporaryOutputBoard: PropTypes.func,
     /**
      *
      */
@@ -330,7 +331,8 @@ export class Board extends Component {
       totalRows,
       changeDefaultBoard,
       improvedPhrase,
-      speak
+      speak,
+      onOpenTemporaryOutputBoard
     } = this.props;
 
     const tiles = this.renderTiles(board.tiles);
@@ -367,7 +369,10 @@ export class Board extends Component {
                 hidden: this.props.displaySettings.hideOutputActive
               })}
             >
-              <OutputContainer />
+              <OutputContainer
+                onTemporaryBoardClick={onOpenTemporaryOutputBoard}
+                hideTemporaryBoardButton={isSelecting}
+              />
             </div>
           </Scannable>
 
@@ -467,6 +472,7 @@ export class Board extends Component {
                 {!board.isFixed &&
                   (tiles.length ? (
                     <Grid
+                      key={board.id}
                       board={board}
                       edit={isSelecting && !isSaving}
                       cols={cols}
@@ -484,6 +490,7 @@ export class Board extends Component {
 
                 {board.isFixed && (
                   <FixedGrid
+                    key={board.id}
                     order={board.grid ? board.grid.order : []}
                     items={board.tiles}
                     columns={
