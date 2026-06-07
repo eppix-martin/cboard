@@ -1,0 +1,10 @@
+{
+  "buildCommand": "GENERATE_SOURCEMAP=false yarn build",
+  "outputDirectory": "build",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
