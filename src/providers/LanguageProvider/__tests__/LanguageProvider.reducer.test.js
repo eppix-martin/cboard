@@ -53,7 +53,7 @@ describe('reducer', () => {
     };
     expect(languageProviderReducer(initialState, changeLang)).toEqual({
       ...initialState,
-      lang: 'de-DE',
+      lang: DEFAULT_LANG,
       dir: 'ltr'
     });
   });

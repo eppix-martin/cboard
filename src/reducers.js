@@ -141,7 +141,7 @@ const config = {
 const languagePersistConfig = {
   key: 'language',
   storage: migratingStorage,
-  blacklist: ['langsFetched']
+  blacklist: ['langsFetched', 'lang', 'dir']
 };
 
 export default function createReducer() {
