@@ -1,5 +1,12 @@
+jest.mock('react-intl', () => ({
+  defineMessages: messages => messages
+}));
+
 import boardReducer from '../Board.reducer';
 import { DEFAULT_BOARDS } from '../../../helpers';
+import messages from '../../Communicator/CommunicatorToolbar/CommunicatorToolbar.messages';
+import sourceTranslations from '../../../translations/src/cboard.json';
+import spanishTranslations from '../../../translations/es-ES.json';
 import {
   ADD_BOARDS,
   CHANGE_BOARD,
@@ -44,7 +51,11 @@ const mockBoard = {
   email: 'asd@qwe.com',
   markToUpdate: true
 };
-const [...boards] = [...DEFAULT_BOARDS.advanced, ...DEFAULT_BOARDS.picSeePal];
+const [...boards] = [
+  ...DEFAULT_BOARDS.family,
+  ...DEFAULT_BOARDS.advanced,
+  ...DEFAULT_BOARDS.picSeePal
+];
 const initialState = {
   boards,
   syncMeta: {},
@@ -64,6 +75,32 @@ const initialState = {
 describe('reducer', () => {
   it('should return the initial state', () => {
     expect(boardReducer(undefined, {})).toEqual(initialState);
+  });
+  it('should include the family root board first in the initial state', () => {
+    const state = boardReducer(undefined, {});
+
+    expect(DEFAULT_BOARDS.family[0].id).toBe('family-root');
+    expect(state.boards[0].id).toBe('family-root');
+  });
+  it('should provide gallery metadata for the family root board', () => {
+    const [familyRootBoard] = DEFAULT_BOARDS.family;
+
+    expect(familyRootBoard.description).toBe('familyRootBoardDescription');
+    expect(messages[familyRootBoard.description]).toEqual({
+      id: 'cboard.components.CommunicatorToolbar.familyRootBoardDescription',
+      defaultMessage: 'Local family board with a small starter vocabulary.'
+    });
+    expect(
+      sourceTranslations[
+        'cboard.components.CommunicatorToolbar.familyRootBoardDescription'
+      ]
+    ).toBe('Local family board with a small starter vocabulary.');
+    expect(
+      spanishTranslations[
+        'cboard.components.CommunicatorToolbar.familyRootBoardDescription'
+      ]
+    ).toBe('Tablero familiar local con un vocabulario inicial pequeño.');
+    expect(familyRootBoard.caption).toBe('/symbols/arasaac/home.png');
   });
   it('should handle logout', () => {
     const logout = {

@@ -48,6 +48,7 @@ import {
 import { LOGOUT, LOGIN_SUCCESS } from '../Account/Login/Login.constants';
 
 const initialBoardsState = [
+  ...DEFAULT_BOARDS.family,
   ...DEFAULT_BOARDS.advanced,
   ...DEFAULT_BOARDS.picSeePal
 ];

@@ -1,9 +1,11 @@
 import boards from './api/boards.json';
 import picSeePal from './api/corePicSeePal.json';
+import familyBoards from './api/family/boards.json';
 
 export const DEFAULT_BOARDS = {
   advanced: boards.advanced,
-  picSeePal: picSeePal
+  picSeePal: picSeePal,
+  family: familyBoards
 };
 
 export const deepCopy = obj => JSON.parse(JSON.stringify(obj));

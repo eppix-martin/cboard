@@ -75,5 +75,9 @@ export default defineMessages({
     id: 'cboard.components.CommunicatorToolbar.picSeePalBoardDescription',
     defaultMessage:
       'Fixed board with core vocabulary, distributed in 11 columns and 6 rows. It uses ARASAAC symbols and the Fitzgerald color scheme.'
+  },
+  familyRootBoardDescription: {
+    id: 'cboard.components.CommunicatorToolbar.familyRootBoardDescription',
+    defaultMessage: 'Local family board with a small starter vocabulary.'
   }
 });

@@ -1,0 +1,124 @@
+[
+  {
+    "id": "family-root",
+    "name": "Family Home",
+    "author": "Family",
+    "description": "familyRootBoardDescription",
+    "caption": "/symbols/arasaac/home.png",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "labelKey": "cboard.symbol.yes",
+        "image": "/symbols/arasaac/yes.png",
+        "id": "family-root-yes",
+        "type": "button",
+        "backgroundColor": "#E57373"
+      },
+      {
+        "labelKey": "symbol.descriptiveState.no",
+        "image": "/symbols/arasaac/no.png",
+        "id": "family-root-no",
+        "type": "button",
+        "backgroundColor": "#E57373"
+      },
+      {
+        "labelKey": "symbol.pronouns.I",
+        "image": "/symbols/arasaac/I.png",
+        "id": "family-root-i",
+        "type": "button",
+        "backgroundColor": "#fff176"
+      },
+      {
+        "labelKey": "symbol.foodFeedingAndEating.toEat",
+        "image": "/symbols/arasaac/toEat.png",
+        "id": "family-root-eat",
+        "type": "button",
+        "backgroundColor": "#4CAF50"
+      },
+      {
+        "labelKey": "symbol.drinkDescription.drinks",
+        "image": "/symbols/mulberry/drinks.svg",
+        "loadBoard": "family-drinks",
+        "id": "family-root-drinks",
+        "type": "folder",
+        "linkedBoard": true,
+        "backgroundColor": "#2196F3"
+      },
+      {
+        "labelKey": "cboard.symbol.activities",
+        "image": "/symbols/cboard/activities.svg",
+        "loadBoard": "family-activities",
+        "id": "family-root-activities",
+        "type": "folder",
+        "linkedBoard": true,
+        "backgroundColor": "#2196F3"
+      }
+    ]
+  },
+  {
+    "id": "family-drinks",
+    "name": "Family Drinks",
+    "author": "Family",
+    "description": "Local family drinks board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "Water",
+        "image": "/symbols/arasaac/water.png",
+        "id": "family-drinks-water",
+        "type": "button",
+        "backgroundColor": "#4CAF50"
+      },
+      {
+        "label": "Milk",
+        "image": "/symbols/mulberry/milk.svg",
+        "id": "family-drinks-milk",
+        "type": "button",
+        "backgroundColor": "#4CAF50"
+      },
+      {
+        "label": "Juice",
+        "image": "/symbols/mulberry/apple_juice.svg",
+        "id": "family-drinks-juice",
+        "type": "button",
+        "backgroundColor": "#4CAF50"
+      }
+    ]
+  },
+  {
+    "id": "family-activities",
+    "name": "Family Activities",
+    "author": "Family",
+    "description": "Local family activities board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "Play",
+        "image": "/symbols/mulberry/play_,_to.svg",
+        "id": "family-activities-play",
+        "type": "button",
+        "backgroundColor": "#4CAF50"
+      },
+      {
+        "labelKey": "symbol.electricalComputer.computerKeyboard",
+        "image": "/symbols/arasaac/computerKeyboard.png",
+        "id": "family-activities-computer",
+        "type": "button",
+        "backgroundColor": "#4CAF50"
+      },
+      {
+        "label": "Sleep",
+        "image": "/symbols/mulberry/sleep_male_,_to.svg",
+        "id": "family-activities-sleep",
+        "type": "button",
+        "backgroundColor": "#4CAF50"
+      }
+    ]
+  }
+]
