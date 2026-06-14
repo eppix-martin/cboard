@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { DEFAULT_BOARDS, deepCopy } from '../../helpers';
+import { DEFAULT_BOARDS, FAMILY_BOARDS_VERSION, deepCopy } from '../../helpers';
 import { isLocalBoard, isServerBoard } from './Board.utils';
 
 import {
@@ -55,6 +55,7 @@ const initialBoardsState = [
 
 const initialState = {
   boards: deepCopy(initialBoardsState),
+  familyBoardsVersion: FAMILY_BOARDS_VERSION,
   syncMeta: {},
   output: [],
   activeBoardId: null,

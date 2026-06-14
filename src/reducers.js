@@ -16,7 +16,12 @@ import boardReducer from './components/Board/Board.reducer';
 import communicatorReducer from './components/Communicator/Communicator.reducer';
 import notificationsReducer from './components/Notifications/Notifications.reducer';
 import subscriptionProviderReducer from './providers/SubscriptionProvider/SubscriptionProvider.reducer';
-import { DEFAULT_BOARDS } from '../src/helpers';
+import {
+  DEFAULT_BOARDS,
+  FAMILY_BOARDS_OWNER_EMAIL,
+  FAMILY_BOARDS_VERSION,
+  deepCopy
+} from '../src/helpers';
 
 localForage.config({
   name: 'cboard',
@@ -111,6 +116,71 @@ export const createMigratingStorage = (oldStorage, newStorage) => ({
 
 const migratingStorage = createMigratingStorage(localStorage, localForage);
 
+const FAMILY_ROOT_BOARD_ID = 'family-root';
+
+function isCodeOwnedFamilyBoard(board) {
+  return (
+    board?.id?.startsWith('family-') &&
+    board.email === FAMILY_BOARDS_OWNER_EMAIL
+  );
+}
+
+function migrateCodeOwnedFamilyBoards(state) {
+  const boardState = state.board || {};
+  const persistedBoards = Array.isArray(boardState.boards)
+    ? boardState.boards
+    : [];
+  const currentFamilyBoards = deepCopy(DEFAULT_BOARDS.family);
+  const currentFamilyBoardIds = new Set(
+    currentFamilyBoards.map(board => board.id)
+  );
+  const removedFamilyBoardIds = [];
+  const preservedBoards = persistedBoards.filter(board => {
+    if (currentFamilyBoardIds.has(board.id)) {
+      return false;
+    }
+
+    if (isCodeOwnedFamilyBoard(board)) {
+      removedFamilyBoardIds.push(board.id);
+      return false;
+    }
+
+    return true;
+  });
+  const removedFamilyBoardIdSet = new Set(removedFamilyBoardIds);
+  const syncMeta = Object.keys(boardState.syncMeta || {}).reduce((acc, id) => {
+    if (!removedFamilyBoardIdSet.has(id)) {
+      acc[id] = boardState.syncMeta[id];
+    }
+    return acc;
+  }, {});
+  const navHistory = Array.isArray(boardState.navHistory)
+    ? boardState.navHistory.filter(id => !removedFamilyBoardIdSet.has(id))
+    : [];
+  const activeBoardWasRemoved = removedFamilyBoardIdSet.has(
+    boardState.activeBoardId
+  );
+  const repairedActiveBoardId = activeBoardWasRemoved
+    ? FAMILY_ROOT_BOARD_ID
+    : boardState.activeBoardId;
+  const repairedNavHistory =
+    activeBoardWasRemoved && !navHistory.includes(FAMILY_ROOT_BOARD_ID)
+      ? [FAMILY_ROOT_BOARD_ID]
+      : navHistory;
+
+  return {
+    ...state,
+    board: {
+      ...boardState,
+      boards: [...currentFamilyBoards, ...preservedBoards],
+      syncMeta,
+      activeBoardId: repairedActiveBoardId,
+      navHistory: repairedNavHistory,
+      familyBoardsVersion: FAMILY_BOARDS_VERSION
+    }
+  };
+}
+
 export const boardMigrations = {
   0: state => {
     return {
@@ -127,14 +197,15 @@ export const boardMigrations = {
       ...state.board,
       syncMeta: state.board?.syncMeta ?? {}
     }
-  })
+  }),
+  2: migrateCodeOwnedFamilyBoards
 };
 
 const config = {
   key: 'root',
   storage: migratingStorage,
   blacklist: ['language'],
-  version: 1,
+  version: 2,
   migrate: createMigrate(boardMigrations, { debug: false })
 };
 

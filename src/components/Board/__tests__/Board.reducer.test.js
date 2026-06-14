@@ -5,7 +5,7 @@ jest.mock('react-intl', () => ({
 import fs from 'fs';
 import path from 'path';
 import boardReducer from '../Board.reducer';
-import { DEFAULT_BOARDS } from '../../../helpers';
+import { DEFAULT_BOARDS, FAMILY_BOARDS_VERSION } from '../../../helpers';
 import messages from '../../Communicator/CommunicatorToolbar/CommunicatorToolbar.messages';
 import sourceTranslations from '../../../translations/src/cboard.json';
 import spanishTranslations from '../../../translations/es-ES.json';
@@ -60,6 +60,7 @@ const [...boards] = [
 ];
 const initialState = {
   boards,
+  familyBoardsVersion: FAMILY_BOARDS_VERSION,
   syncMeta: {},
   output: [],
   activeBoardId: null,

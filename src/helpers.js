@@ -2,6 +2,9 @@ import boards from './api/boards.json';
 import picSeePal from './api/corePicSeePal.json';
 import familyBoards from './api/family/boards.json';
 
+export const FAMILY_BOARDS_VERSION = 1;
+export const FAMILY_BOARDS_OWNER_EMAIL = 'family@example.local';
+
 export const DEFAULT_BOARDS = {
   advanced: boards.advanced,
   picSeePal: picSeePal,
