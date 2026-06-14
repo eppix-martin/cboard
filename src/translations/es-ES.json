@@ -261,7 +261,7 @@
   "cboard.components.CommunicatorToolbar.defaultBoardImageAlt": "Descripción del tablero",
   "cboard.components.CommunicatorToolbar.rootBoardDescription": "Tablero fluido con carpetas que contienen categorías de símbolos. Contiene símbolos del set Mulberry sin ningún esquema de colores. ",
   "cboard.components.CommunicatorToolbar.picSeePalBoardDescription": "Tablero fijo con vocabulario núcleo distribuido en 11 columnas y 6 filas, utiliza símbolos ARASAAC y el esquema de color Fitzgerald.",
-  "cboard.components.CommunicatorToolbar.familyRootBoardDescription": "Tablero familiar local con un vocabulario inicial pequeño.",
+  "cboard.components.CommunicatorToolbar.familyRootBoardDescription": "Tablero familiar local con categorías de pictogramas generados.",
   "cboard.components.CommunicatorToolbar.close": "Cerrar",
   "cboard.components.CommunicatorDialog.title": "Mi comunicador",
   "cboard.components.CommunicatorDialog.menu": "Menú",

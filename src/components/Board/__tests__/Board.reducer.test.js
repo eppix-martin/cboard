@@ -2,6 +2,8 @@ jest.mock('react-intl', () => ({
   defineMessages: messages => messages
 }));
 
+import fs from 'fs';
+import path from 'path';
 import boardReducer from '../Board.reducer';
 import { DEFAULT_BOARDS } from '../../../helpers';
 import messages from '../../Communicator/CommunicatorToolbar/CommunicatorToolbar.messages';
@@ -88,19 +90,155 @@ describe('reducer', () => {
     expect(familyRootBoard.description).toBe('familyRootBoardDescription');
     expect(messages[familyRootBoard.description]).toEqual({
       id: 'cboard.components.CommunicatorToolbar.familyRootBoardDescription',
-      defaultMessage: 'Local family board with a small starter vocabulary.'
+      defaultMessage: 'Local family board with generated pictogram categories.'
     });
     expect(
       sourceTranslations[
         'cboard.components.CommunicatorToolbar.familyRootBoardDescription'
       ]
-    ).toBe('Local family board with a small starter vocabulary.');
+    ).toBe('Local family board with generated pictogram categories.');
     expect(
       spanishTranslations[
         'cboard.components.CommunicatorToolbar.familyRootBoardDescription'
       ]
-    ).toBe('Tablero familiar local con un vocabulario inicial pequeño.');
-    expect(familyRootBoard.caption).toBe('/symbols/arasaac/home.png');
+    ).toBe('Tablero familiar local con categorías de pictogramas generados.');
+    expect(familyRootBoard.caption).toBe('/symbols/family/personas/mama.png');
+  });
+  it('should expose generated family pictogram categories', () => {
+    const [familyRootBoard] = DEFAULT_BOARDS.family;
+    const rootTiles = familyRootBoard.tiles;
+
+    expect(
+      rootTiles.map(tile => ({
+        id: tile.id,
+        loadBoard: tile.loadBoard,
+        label: tile.label,
+        image: tile.image,
+        type: tile.type,
+        linkedBoard: tile.linkedBoard,
+        borderColor: tile.borderColor
+      }))
+    ).toEqual([
+      {
+        id: 'family-root-personas',
+        loadBoard: 'family-personas',
+        label: 'PERSONAS',
+        image: '/symbols/family/personas/mama.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'red'
+      },
+      {
+        id: 'family-root-acciones',
+        loadBoard: 'family-acciones',
+        label: 'ACCIONES',
+        image: '/symbols/family/acciones/jugar.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'green'
+      },
+      {
+        id: 'family-root-cosas',
+        loadBoard: 'family-cosas',
+        label: 'COSAS',
+        image: '/symbols/family/cosas/agua.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'blue'
+      },
+      {
+        id: 'family-root-lugares',
+        loadBoard: 'family-lugares',
+        label: 'LUGARES',
+        image: '/symbols/family/lugares/casa.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'black'
+      },
+      {
+        id: 'family-root-conversacion',
+        loadBoard: 'family-conversacion',
+        label: 'CONVERSACION',
+        image: '/symbols/family/conversacion/hola.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: undefined
+      },
+      {
+        id: 'family-root-dibus',
+        loadBoard: 'family-dibus',
+        label: 'DIBUS',
+        image: '/symbols/family/dibus/bluey.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'blue'
+      }
+    ]);
+  });
+  it('should include every generated family PNG with stable labels, paths, and borders', () => {
+    const familyBoardsById = DEFAULT_BOARDS.family.reduce(
+      (boardsById, board) => {
+        boardsById[board.id] = board;
+        return boardsById;
+      },
+      {}
+    );
+    const familySymbolsPath = path.resolve(
+      __dirname,
+      '../../../../public/symbols/family'
+    );
+    const categoryBorderColors = {
+      acciones: 'green',
+      conversacion: undefined,
+      cosas: 'blue',
+      dibus: 'blue',
+      lugares: 'black',
+      personas: 'red'
+    };
+    const categories = [
+      'acciones',
+      'conversacion',
+      'cosas',
+      'dibus',
+      'lugares',
+      'personas'
+    ];
+
+    categories.forEach(category => {
+      const pngFiles = fs
+        .readdirSync(path.join(familySymbolsPath, category))
+        .filter(fileName => path.extname(fileName) === '.png')
+        .sort();
+      const expectedTiles = pngFiles.map(fileName => {
+        const symbolId = path.basename(fileName, '.png');
+        const expectedTile = {
+          id: `family-${category}-${symbolId}`,
+          label: symbolId.replace(/-/g, ' ').toUpperCase(),
+          image: `/symbols/family/${category}/${fileName}`,
+          type: 'button'
+        };
+        const borderColor = categoryBorderColors[category];
+
+        if (borderColor) {
+          expectedTile.borderColor = borderColor;
+        }
+
+        return expectedTile;
+      });
+      const actualTiles = familyBoardsById[`family-${category}`].tiles
+        .map(tile => ({
+          id: tile.id,
+          label: tile.label,
+          image: tile.image,
+          type: tile.type,
+          ...(tile.borderColor ? { borderColor: tile.borderColor } : {})
+        }))
+        .sort((firstTile, secondTile) =>
+          firstTile.id.localeCompare(secondTile.id)
+        );
+
+      expect(actualTiles).toEqual(expectedTiles);
+    });
   });
   it('should handle logout', () => {
     const logout = {

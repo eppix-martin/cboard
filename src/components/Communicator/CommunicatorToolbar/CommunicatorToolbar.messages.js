@@ -78,6 +78,6 @@ export default defineMessages({
   },
   familyRootBoardDescription: {
     id: 'cboard.components.CommunicatorToolbar.familyRootBoardDescription',
-    defaultMessage: 'Local family board with a small starter vocabulary.'
+    defaultMessage: 'Local family board with generated pictogram categories.'
   }
 });

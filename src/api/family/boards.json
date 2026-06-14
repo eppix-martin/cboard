@@ -4,120 +4,717 @@
     "name": "Family Home",
     "author": "Family",
     "description": "familyRootBoardDescription",
-    "caption": "/symbols/arasaac/home.png",
+    "caption": "/symbols/family/personas/mama.png",
     "email": "family@example.local",
     "isPublic": false,
     "hidden": false,
     "tiles": [
       {
-        "labelKey": "cboard.symbol.yes",
-        "image": "/symbols/arasaac/yes.png",
-        "id": "family-root-yes",
-        "type": "button",
-        "backgroundColor": "#E57373"
-      },
-      {
-        "labelKey": "symbol.descriptiveState.no",
-        "image": "/symbols/arasaac/no.png",
-        "id": "family-root-no",
-        "type": "button",
-        "backgroundColor": "#E57373"
-      },
-      {
-        "labelKey": "symbol.pronouns.I",
-        "image": "/symbols/arasaac/I.png",
-        "id": "family-root-i",
-        "type": "button",
-        "backgroundColor": "#fff176"
-      },
-      {
-        "labelKey": "symbol.foodFeedingAndEating.toEat",
-        "image": "/symbols/arasaac/toEat.png",
-        "id": "family-root-eat",
-        "type": "button",
-        "backgroundColor": "#4CAF50"
-      },
-      {
-        "labelKey": "symbol.drinkDescription.drinks",
-        "image": "/symbols/mulberry/drinks.svg",
-        "loadBoard": "family-drinks",
-        "id": "family-root-drinks",
+        "label": "PERSONAS",
+        "image": "/symbols/family/personas/mama.png",
+        "loadBoard": "family-personas",
+        "id": "family-root-personas",
         "type": "folder",
         "linkedBoard": true,
-        "backgroundColor": "#2196F3"
+        "borderColor": "red"
       },
       {
-        "labelKey": "cboard.symbol.activities",
-        "image": "/symbols/cboard/activities.svg",
-        "loadBoard": "family-activities",
-        "id": "family-root-activities",
+        "label": "ACCIONES",
+        "image": "/symbols/family/acciones/jugar.png",
+        "loadBoard": "family-acciones",
+        "id": "family-root-acciones",
         "type": "folder",
         "linkedBoard": true,
-        "backgroundColor": "#2196F3"
+        "borderColor": "green"
+      },
+      {
+        "label": "COSAS",
+        "image": "/symbols/family/cosas/agua.png",
+        "loadBoard": "family-cosas",
+        "id": "family-root-cosas",
+        "type": "folder",
+        "linkedBoard": true,
+        "borderColor": "blue"
+      },
+      {
+        "label": "LUGARES",
+        "image": "/symbols/family/lugares/casa.png",
+        "loadBoard": "family-lugares",
+        "id": "family-root-lugares",
+        "type": "folder",
+        "linkedBoard": true,
+        "borderColor": "black"
+      },
+      {
+        "label": "CONVERSACION",
+        "image": "/symbols/family/conversacion/hola.png",
+        "loadBoard": "family-conversacion",
+        "id": "family-root-conversacion",
+        "type": "folder",
+        "linkedBoard": true
+      },
+      {
+        "label": "DIBUS",
+        "image": "/symbols/family/dibus/bluey.png",
+        "loadBoard": "family-dibus",
+        "id": "family-root-dibus",
+        "type": "folder",
+        "linkedBoard": true,
+        "borderColor": "blue"
       }
     ]
   },
   {
-    "id": "family-drinks",
-    "name": "Family Drinks",
+    "id": "family-personas",
+    "name": "Family PERSONAS",
     "author": "Family",
-    "description": "Local family drinks board",
+    "description": "Local family personas board",
     "email": "family@example.local",
     "isPublic": false,
     "hidden": false,
     "tiles": [
       {
-        "label": "Water",
-        "image": "/symbols/arasaac/water.png",
-        "id": "family-drinks-water",
+        "label": "TOMI",
+        "image": "/symbols/family/personas/tomi.png",
+        "id": "family-personas-tomi",
         "type": "button",
-        "backgroundColor": "#4CAF50"
+        "borderColor": "red"
       },
       {
-        "label": "Milk",
-        "image": "/symbols/mulberry/milk.svg",
-        "id": "family-drinks-milk",
+        "label": "ELINA",
+        "image": "/symbols/family/personas/elina.png",
+        "id": "family-personas-elina",
         "type": "button",
-        "backgroundColor": "#4CAF50"
+        "borderColor": "red"
       },
       {
-        "label": "Juice",
-        "image": "/symbols/mulberry/apple_juice.svg",
-        "id": "family-drinks-juice",
+        "label": "DANTE",
+        "image": "/symbols/family/personas/dante.png",
+        "id": "family-personas-dante",
         "type": "button",
-        "backgroundColor": "#4CAF50"
+        "borderColor": "red"
+      },
+      {
+        "label": "CHIARA",
+        "image": "/symbols/family/personas/chiara.png",
+        "id": "family-personas-chiara",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "SKY",
+        "image": "/symbols/family/personas/sky.png",
+        "id": "family-personas-sky",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "ABRIL",
+        "image": "/symbols/family/personas/abril.png",
+        "id": "family-personas-abril",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "TRINI",
+        "image": "/symbols/family/personas/trini.png",
+        "id": "family-personas-trini",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "JUANCA",
+        "image": "/symbols/family/personas/juanca.png",
+        "id": "family-personas-juanca",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "MAMA",
+        "image": "/symbols/family/personas/mama.png",
+        "id": "family-personas-mama",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "YENI",
+        "image": "/symbols/family/personas/yeni.png",
+        "id": "family-personas-yeni",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "NATI",
+        "image": "/symbols/family/personas/nati.png",
+        "id": "family-personas-nati",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "PAPA",
+        "image": "/symbols/family/personas/papa.png",
+        "id": "family-personas-papa",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "DELFI",
+        "image": "/symbols/family/personas/delfi.png",
+        "id": "family-personas-delfi",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "GABY",
+        "image": "/symbols/family/personas/gaby.png",
+        "id": "family-personas-gaby",
+        "type": "button",
+        "borderColor": "red"
       }
     ]
   },
   {
-    "id": "family-activities",
-    "name": "Family Activities",
+    "id": "family-acciones",
+    "name": "Family ACCIONES",
     "author": "Family",
-    "description": "Local family activities board",
+    "description": "Local family acciones board",
     "email": "family@example.local",
     "isPublic": false,
     "hidden": false,
     "tiles": [
       {
-        "label": "Play",
-        "image": "/symbols/mulberry/play_,_to.svg",
-        "id": "family-activities-play",
+        "label": "CANTAR",
+        "image": "/symbols/family/acciones/cantar.png",
+        "id": "family-acciones-cantar",
         "type": "button",
-        "backgroundColor": "#4CAF50"
+        "borderColor": "green"
       },
       {
-        "labelKey": "symbol.electricalComputer.computerKeyboard",
-        "image": "/symbols/arasaac/computerKeyboard.png",
-        "id": "family-activities-computer",
+        "label": "ABRAZAR",
+        "image": "/symbols/family/acciones/abrazar.png",
+        "id": "family-acciones-abrazar",
         "type": "button",
-        "backgroundColor": "#4CAF50"
+        "borderColor": "green"
       },
       {
-        "label": "Sleep",
-        "image": "/symbols/mulberry/sleep_male_,_to.svg",
-        "id": "family-activities-sleep",
+        "label": "DORMIR",
+        "image": "/symbols/family/acciones/dormir.png",
+        "id": "family-acciones-dormir",
         "type": "button",
-        "backgroundColor": "#4CAF50"
+        "borderColor": "green"
+      },
+      {
+        "label": "SENTARSE",
+        "image": "/symbols/family/acciones/sentarse.png",
+        "id": "family-acciones-sentarse",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "JUGAR",
+        "image": "/symbols/family/acciones/jugar.png",
+        "id": "family-acciones-jugar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "SUBIR",
+        "image": "/symbols/family/acciones/subir.png",
+        "id": "family-acciones-subir",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "MIRAR",
+        "image": "/symbols/family/acciones/mirar.png",
+        "id": "family-acciones-mirar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "COMER",
+        "image": "/symbols/family/acciones/comer.png",
+        "id": "family-acciones-comer",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "SOPLAR",
+        "image": "/symbols/family/acciones/soplar.png",
+        "id": "family-acciones-soplar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "CEPILLAR",
+        "image": "/symbols/family/acciones/cepillar.png",
+        "id": "family-acciones-cepillar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "DAME",
+        "image": "/symbols/family/acciones/dame.png",
+        "id": "family-acciones-dame",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "ENHEBRADO",
+        "image": "/symbols/family/acciones/enhebrado.png",
+        "id": "family-acciones-enhebrado",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "BAILAR",
+        "image": "/symbols/family/acciones/bailar.png",
+        "id": "family-acciones-bailar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "CERRAR",
+        "image": "/symbols/family/acciones/cerrar.png",
+        "id": "family-acciones-cerrar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "ABRIR",
+        "image": "/symbols/family/acciones/abrir.png",
+        "id": "family-acciones-abrir",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "HAMACARSE",
+        "image": "/symbols/family/acciones/hamacarse.png",
+        "id": "family-acciones-hamacarse",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "BAJAR",
+        "image": "/symbols/family/acciones/bajar.png",
+        "id": "family-acciones-bajar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "GUARDAR",
+        "image": "/symbols/family/acciones/guardar.png",
+        "id": "family-acciones-guardar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "PARARSE",
+        "image": "/symbols/family/acciones/pararse.png",
+        "id": "family-acciones-pararse",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "PONER",
+        "image": "/symbols/family/acciones/poner.png",
+        "id": "family-acciones-poner",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "TOMAR",
+        "image": "/symbols/family/acciones/tomar.png",
+        "id": "family-acciones-tomar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "ESCUCHAR",
+        "image": "/symbols/family/acciones/escuchar.png",
+        "id": "family-acciones-escuchar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "TIRAR",
+        "image": "/symbols/family/acciones/tirar.png",
+        "id": "family-acciones-tirar",
+        "type": "button",
+        "borderColor": "green"
+      },
+      {
+        "label": "SACAR",
+        "image": "/symbols/family/acciones/sacar.png",
+        "id": "family-acciones-sacar",
+        "type": "button",
+        "borderColor": "green"
+      }
+    ]
+  },
+  {
+    "id": "family-cosas",
+    "name": "Family COSAS",
+    "author": "Family",
+    "description": "Local family cosas board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "NEGRO",
+        "image": "/symbols/family/cosas/negro.png",
+        "id": "family-cosas-negro",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "VERDE",
+        "image": "/symbols/family/cosas/verde.png",
+        "id": "family-cosas-verde",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "PASTA",
+        "image": "/symbols/family/cosas/pasta.png",
+        "id": "family-cosas-pasta",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "ROJO",
+        "image": "/symbols/family/cosas/rojo.png",
+        "id": "family-cosas-rojo",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "VIOLETA",
+        "image": "/symbols/family/cosas/violeta.png",
+        "id": "family-cosas-violeta",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "BLANCO",
+        "image": "/symbols/family/cosas/blanco.png",
+        "id": "family-cosas-blanco",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "BANANA",
+        "image": "/symbols/family/cosas/banana.png",
+        "id": "family-cosas-banana",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "PELOTERO",
+        "image": "/symbols/family/cosas/pelotero.png",
+        "id": "family-cosas-pelotero",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "PAN",
+        "image": "/symbols/family/cosas/pan.png",
+        "id": "family-cosas-pan",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "CUCHARA",
+        "image": "/symbols/family/cosas/cuchara.png",
+        "id": "family-cosas-cuchara",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "TOBOGAN",
+        "image": "/symbols/family/cosas/tobogan.png",
+        "id": "family-cosas-tobogan",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "LECHE",
+        "image": "/symbols/family/cosas/leche.png",
+        "id": "family-cosas-leche",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "AZUL",
+        "image": "/symbols/family/cosas/azul.png",
+        "id": "family-cosas-azul",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "JUGO",
+        "image": "/symbols/family/cosas/jugo.png",
+        "id": "family-cosas-jugo",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "POSTRECITO",
+        "image": "/symbols/family/cosas/postrecito.png",
+        "id": "family-cosas-postrecito",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "MARRON",
+        "image": "/symbols/family/cosas/marron.png",
+        "id": "family-cosas-marron",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "PELOTA",
+        "image": "/symbols/family/cosas/pelota.png",
+        "id": "family-cosas-pelota",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "TUNEL",
+        "image": "/symbols/family/cosas/tunel.png",
+        "id": "family-cosas-tunel",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "JUGUITO",
+        "image": "/symbols/family/cosas/juguito.png",
+        "id": "family-cosas-juguito",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "CEPILLO",
+        "image": "/symbols/family/cosas/cepillo.png",
+        "id": "family-cosas-cepillo",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "AMARILLO",
+        "image": "/symbols/family/cosas/amarillo.png",
+        "id": "family-cosas-amarillo",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "GALLETITAS",
+        "image": "/symbols/family/cosas/galletitas.png",
+        "id": "family-cosas-galletitas",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "TENEDOR",
+        "image": "/symbols/family/cosas/tenedor.png",
+        "id": "family-cosas-tenedor",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "AGUA",
+        "image": "/symbols/family/cosas/agua.png",
+        "id": "family-cosas-agua",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "NARANJA",
+        "image": "/symbols/family/cosas/naranja.png",
+        "id": "family-cosas-naranja",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "MUNECA",
+        "image": "/symbols/family/cosas/muneca.png",
+        "id": "family-cosas-muneca",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "ROSA",
+        "image": "/symbols/family/cosas/rosa.png",
+        "id": "family-cosas-rosa",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "PLATO",
+        "image": "/symbols/family/cosas/plato.png",
+        "id": "family-cosas-plato",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "CARRITO",
+        "image": "/symbols/family/cosas/carrito.png",
+        "id": "family-cosas-carrito",
+        "type": "button",
+        "borderColor": "blue"
+      }
+    ]
+  },
+  {
+    "id": "family-lugares",
+    "name": "Family LUGARES",
+    "author": "Family",
+    "description": "Local family lugares board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "JARDIN",
+        "image": "/symbols/family/lugares/jardin.png",
+        "id": "family-lugares-jardin",
+        "type": "button",
+        "borderColor": "black"
+      },
+      {
+        "label": "PLAZA",
+        "image": "/symbols/family/lugares/plaza.png",
+        "id": "family-lugares-plaza",
+        "type": "button",
+        "borderColor": "black"
+      },
+      {
+        "label": "CASA",
+        "image": "/symbols/family/lugares/casa.png",
+        "id": "family-lugares-casa",
+        "type": "button",
+        "borderColor": "black"
+      }
+    ]
+  },
+  {
+    "id": "family-conversacion",
+    "name": "Family CONVERSACION",
+    "author": "Family",
+    "description": "Local family conversacion board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "CHAU",
+        "image": "/symbols/family/conversacion/chau.png",
+        "id": "family-conversacion-chau",
+        "type": "button"
+      },
+      {
+        "label": "ESPERA",
+        "image": "/symbols/family/conversacion/espera.png",
+        "id": "family-conversacion-espera",
+        "type": "button"
+      },
+      {
+        "label": "AYUDA",
+        "image": "/symbols/family/conversacion/ayuda.png",
+        "id": "family-conversacion-ayuda",
+        "type": "button"
+      },
+      {
+        "label": "TRISTE",
+        "image": "/symbols/family/conversacion/triste.png",
+        "id": "family-conversacion-triste",
+        "type": "button"
+      },
+      {
+        "label": "HOLA",
+        "image": "/symbols/family/conversacion/hola.png",
+        "id": "family-conversacion-hola",
+        "type": "button"
+      },
+      {
+        "label": "CONTENTA",
+        "image": "/symbols/family/conversacion/contenta.png",
+        "id": "family-conversacion-contenta",
+        "type": "button"
+      },
+      {
+        "label": "NO",
+        "image": "/symbols/family/conversacion/no.png",
+        "id": "family-conversacion-no",
+        "type": "button"
+      }
+    ]
+  },
+  {
+    "id": "family-dibus",
+    "name": "Family DIBUS",
+    "author": "Family",
+    "description": "Local family dibus board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "PAW PATROL",
+        "image": "/symbols/family/dibus/paw-patrol.png",
+        "id": "family-dibus-paw-patrol",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "MEEKAH",
+        "image": "/symbols/family/dibus/meekah.png",
+        "id": "family-dibus-meekah",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "PUP ACADEMY",
+        "image": "/symbols/family/dibus/pup-academy.png",
+        "id": "family-dibus-pup-academy",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "LITTLE ANGEL",
+        "image": "/symbols/family/dibus/little-angel.png",
+        "id": "family-dibus-little-angel",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "TIBUCAN",
+        "image": "/symbols/family/dibus/tibucan.png",
+        "id": "family-dibus-tibucan",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "BLUEY",
+        "image": "/symbols/family/dibus/bluey.png",
+        "id": "family-dibus-bluey",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "BLIPPI",
+        "image": "/symbols/family/dibus/blippi.png",
+        "id": "family-dibus-blippi",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "RUBBLE Y EQUIPO",
+        "image": "/symbols/family/dibus/rubble-y-equipo.png",
+        "id": "family-dibus-rubble-y-equipo",
+        "type": "button",
+        "borderColor": "blue"
       }
     ]
   }
