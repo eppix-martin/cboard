@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Board from '../Board.component';
+import Board, { getBoardGridCols, isFamilyBoard } from '../Board.component';
 jest.mock('../Board.messages', () => ({
   editTitle: {
     id: 'cboard.components.Board.editTitle',
@@ -56,4 +56,37 @@ it('renders without crashing', () => {
     }
   };
   shallow(<Board {...props} />);
+});
+
+describe('family board layout', () => {
+  it('identifies boards with the family prefix only', () => {
+    expect(isFamilyBoard({ id: 'family-root' })).toBe(true);
+    expect(isFamilyBoard({ id: 'root' })).toBe(false);
+  });
+
+  it('uses four columns for non-fixed family boards on tablet and desktop sizes', () => {
+    const displaySettings = { uiSize: 'Standard' };
+    const cols = getBoardGridCols({ id: 'family-personas' }, displaySettings);
+
+    expect(cols).toEqual({
+      lg: 4,
+      md: 4,
+      sm: 4,
+      xs: 4,
+      xxs: 2
+    });
+  });
+
+  it('keeps the default grid columns for non-family boards', () => {
+    const displaySettings = { uiSize: 'Standard' };
+    const cols = getBoardGridCols({ id: 'root' }, displaySettings);
+
+    expect(cols).toEqual({
+      lg: 6,
+      md: 6,
+      sm: 5,
+      xs: 4,
+      xxs: 3
+    });
+  });
 });

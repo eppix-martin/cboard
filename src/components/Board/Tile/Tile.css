@@ -91,3 +91,8 @@
   border-color: rgba(0, 0, 0, 0.5);
   transition: none;
 }
+
+.Board--family .TileShape::before,
+.Board--family .TileShape--folder::after {
+  border-width: 6px;
+}

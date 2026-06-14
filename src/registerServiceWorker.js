@@ -60,7 +60,14 @@ function registerValidSW(
               // the fresh content will have been added to the cache.
               // It's the perfect time to display a "New content is
               // available; please refresh." message in your web app.
-              onNewContentAvailable();
+              onNewContentAvailable(
+                createUpdateContext(
+                  registration,
+                  navigator.serviceWorker,
+                  undefined,
+                  installingWorker
+                )
+              );
               console.log('New content is available; please refresh.');
             } else {
               // At this point, everything has been precached.
@@ -106,9 +113,58 @@ function checkValidServiceWorker(swUrl) {
 }
 
 export function unregister() {
-  if ('serviceWorker' in navigator) {
+  if (
+    'serviceWorker' in navigator &&
+    navigator.serviceWorker.ready &&
+    navigator.serviceWorker.ready.then
+  ) {
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister();
     });
   }
+}
+
+export function waitForServiceWorkerController(
+  serviceWorker = navigator.serviceWorker,
+  reload = () => window.location.reload(),
+  waitForControllerChange = false
+) {
+  if (serviceWorker.controller && !waitForControllerChange) {
+    reload();
+    return Promise.resolve();
+  }
+
+  return new Promise(resolve => {
+    const handleControllerChange = () => {
+      serviceWorker.removeEventListener(
+        'controllerchange',
+        handleControllerChange
+      );
+      reload();
+      resolve();
+    };
+
+    serviceWorker.addEventListener('controllerchange', handleControllerChange);
+  });
+}
+
+export function createUpdateContext(
+  registration,
+  serviceWorker = navigator.serviceWorker,
+  reload = () => window.location.reload(),
+  installingWorker
+) {
+  return {
+    registration,
+    refresh: () => {
+      const waitingWorker =
+        (registration && registration.waiting) || installingWorker;
+
+      if (waitingWorker) {
+        waitingWorker.postMessage({ action: 'skipWaiting' });
+      }
+
+      return waitForServiceWorkerController(serviceWorker, reload, true);
+    }
+  };
 }

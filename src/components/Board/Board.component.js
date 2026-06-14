@@ -37,6 +37,26 @@ import { NAVIGATION_BUTTONS_STYLE_SIDES } from '../Settings/Navigation/Navigatio
 import ImprovePhraseOutput from './ImprovePhraseOutput';
 import { resolveTileLabel, resolveBoardName } from '../../helpers';
 
+const FAMILY_BOARD_GRID_COLS = {
+  lg: 4,
+  md: 4,
+  sm: 4,
+  xs: 4,
+  xxs: 2
+};
+
+export function isFamilyBoard(board) {
+  return Boolean(board && board.id && board.id.indexOf('family-') === 0);
+}
+
+export function getBoardGridCols(board, displaySettings) {
+  if (isFamilyBoard(board) && !board.isFixed) {
+    return FAMILY_BOARD_GRID_COLS;
+  }
+
+  return DISPLAY_SIZE_GRID_COLS[displaySettings.uiSize];
+}
+
 export class Board extends Component {
   static propTypes = {
     board: PropTypes.shape({
@@ -336,7 +356,7 @@ export class Board extends Component {
     } = this.props;
 
     const tiles = this.renderTiles(board.tiles);
-    const cols = DISPLAY_SIZE_GRID_COLS[this.props.displaySettings.uiSize];
+    const cols = getBoardGridCols(board, this.props.displaySettings);
     const isLoggedIn = !!userData.email;
     const isNavigationButtonsOnTheSide =
       navigationSettings.navigationButtonsStyle === undefined ||
@@ -352,7 +372,8 @@ export class Board extends Component {
       >
         <div
           className={classNames('Board', {
-            'is-locked': this.props.isLocked
+            'is-locked': this.props.isLocked,
+            'Board--family': isFamilyBoard(board)
           })}
         >
           <BoardTour

@@ -95,3 +95,34 @@
 [dir='rtl'] .Symbol__label {
   direction: rtl;
 }
+
+.Board--family .Tile .Symbol {
+  padding-top: 0;
+}
+
+.Board--family .Tile .Symbol__image-container {
+  width: 100%;
+}
+
+.Board--family .Tile .Symbol__label {
+  position: absolute;
+  top: 0.35rem;
+  left: 50%;
+  z-index: 1;
+  width: calc(100% - 1rem);
+  min-height: 2.4em;
+  padding: 0.25em 0.45em;
+  margin: 0;
+  font-size: 1.7rem;
+  line-height: 1.15;
+  white-space: normal;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 0.35em;
+}
+
+@media (max-width: 599px) {
+  .Board--family .Tile .Symbol__label {
+    font-size: 1.35rem;
+  }
+}

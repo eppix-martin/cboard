@@ -13,6 +13,21 @@ describe('actions', () => {
     expect(actions.showNotification(message)).toEqual(expectedAction);
   });
 
+  it('should keep refresh notification actions serializable', () => {
+    const message = 'dummy message';
+
+    const expectedAction = {
+      type: types.SHOW_NOTIFICATION,
+      message,
+      open: true,
+      kind: 'refresh'
+    };
+
+    expect(actions.showNotification(message, 'refresh')).toEqual(
+      expectedAction
+    );
+  });
+
   it('should create an action to hide notification', () => {
     const expectedAction = {
       type: types.HIDE_NOTIFICATION,
