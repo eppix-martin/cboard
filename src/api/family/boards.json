@@ -4,14 +4,14 @@
     "name": "Family Home",
     "author": "Family",
     "description": "familyRootBoardDescription",
-    "caption": "/symbols/family/personas/mama.png",
+    "caption": "/symbols/family/personas/abril.png",
     "email": "family@example.local",
     "isPublic": false,
     "hidden": false,
     "tiles": [
       {
         "label": "PERSONAS",
-        "image": "/symbols/family/personas/mama.png",
+        "image": "/symbols/family/personas/abril.png",
         "loadBoard": "family-personas",
         "id": "family-root-personas",
         "type": "folder",
@@ -37,6 +37,15 @@
         "borderColor": "blue"
       },
       {
+        "label": "COLORES",
+        "image": "/symbols/family/colores/azul.png",
+        "loadBoard": "family-colores",
+        "id": "family-root-colores",
+        "type": "folder",
+        "linkedBoard": true,
+        "borderColor": "blue"
+      },
+      {
         "label": "LUGARES",
         "image": "/symbols/family/lugares/casa.png",
         "loadBoard": "family-lugares",
@@ -46,7 +55,7 @@
         "borderColor": "black"
       },
       {
-        "label": "CONVERSACION",
+        "label": "CONVERSACIÓN",
         "image": "/symbols/family/conversacion/hola.png",
         "loadBoard": "family-conversacion",
         "id": "family-root-conversacion",
@@ -130,7 +139,7 @@
         "borderColor": "red"
       },
       {
-        "label": "MAMA",
+        "label": "MAMÁ",
         "image": "/symbols/family/personas/mama.png",
         "id": "family-personas-mama",
         "type": "button",
@@ -151,7 +160,7 @@
         "borderColor": "red"
       },
       {
-        "label": "PAPA",
+        "label": "PAPÁ",
         "image": "/symbols/family/personas/papa.png",
         "id": "family-personas-papa",
         "type": "button",
@@ -362,44 +371,9 @@
     "hidden": false,
     "tiles": [
       {
-        "label": "NEGRO",
-        "image": "/symbols/family/cosas/negro.png",
-        "id": "family-cosas-negro",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
-        "label": "VERDE",
-        "image": "/symbols/family/cosas/verde.png",
-        "id": "family-cosas-verde",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
         "label": "PASTA",
         "image": "/symbols/family/cosas/pasta.png",
         "id": "family-cosas-pasta",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
-        "label": "ROJO",
-        "image": "/symbols/family/cosas/rojo.png",
-        "id": "family-cosas-rojo",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
-        "label": "VIOLETA",
-        "image": "/symbols/family/cosas/violeta.png",
-        "id": "family-cosas-violeta",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
-        "label": "BLANCO",
-        "image": "/symbols/family/cosas/blanco.png",
-        "id": "family-cosas-blanco",
         "type": "button",
         "borderColor": "blue"
       },
@@ -432,7 +406,7 @@
         "borderColor": "blue"
       },
       {
-        "label": "TOBOGAN",
+        "label": "TOBOGÁN",
         "image": "/symbols/family/cosas/tobogan.png",
         "id": "family-cosas-tobogan",
         "type": "button",
@@ -442,13 +416,6 @@
         "label": "LECHE",
         "image": "/symbols/family/cosas/leche.png",
         "id": "family-cosas-leche",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
-        "label": "AZUL",
-        "image": "/symbols/family/cosas/azul.png",
-        "id": "family-cosas-azul",
         "type": "button",
         "borderColor": "blue"
       },
@@ -467,13 +434,6 @@
         "borderColor": "blue"
       },
       {
-        "label": "MARRON",
-        "image": "/symbols/family/cosas/marron.png",
-        "id": "family-cosas-marron",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
         "label": "PELOTA",
         "image": "/symbols/family/cosas/pelota.png",
         "id": "family-cosas-pelota",
@@ -481,7 +441,7 @@
         "borderColor": "blue"
       },
       {
-        "label": "TUNEL",
+        "label": "TÚNEL",
         "image": "/symbols/family/cosas/tunel.png",
         "id": "family-cosas-tunel",
         "type": "button",
@@ -498,13 +458,6 @@
         "label": "CEPILLO",
         "image": "/symbols/family/cosas/cepillo.png",
         "id": "family-cosas-cepillo",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
-        "label": "AMARILLO",
-        "image": "/symbols/family/cosas/amarillo.png",
-        "id": "family-cosas-amarillo",
         "type": "button",
         "borderColor": "blue"
       },
@@ -530,23 +483,9 @@
         "borderColor": "blue"
       },
       {
-        "label": "NARANJA",
-        "image": "/symbols/family/cosas/naranja.png",
-        "id": "family-cosas-naranja",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
-        "label": "MUNECA",
+        "label": "MUÑECA",
         "image": "/symbols/family/cosas/muneca.png",
         "id": "family-cosas-muneca",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
-        "label": "ROSA",
-        "image": "/symbols/family/cosas/rosa.png",
-        "id": "family-cosas-rosa",
         "type": "button",
         "borderColor": "blue"
       },
@@ -567,6 +506,87 @@
     ]
   },
   {
+    "id": "family-colores",
+    "name": "Family COLORES",
+    "author": "Family",
+    "description": "Local family colores board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "AMARILLO",
+        "image": "/symbols/family/colores/amarillo.png",
+        "id": "family-colores-amarillo",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "AZUL",
+        "image": "/symbols/family/colores/azul.png",
+        "id": "family-colores-azul",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "BLANCO",
+        "image": "/symbols/family/colores/blanco.png",
+        "id": "family-colores-blanco",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "MARRÓN",
+        "image": "/symbols/family/colores/marron.png",
+        "id": "family-colores-marron",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "NARANJA",
+        "image": "/symbols/family/colores/naranja.png",
+        "id": "family-colores-naranja",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "NEGRO",
+        "image": "/symbols/family/colores/negro.png",
+        "id": "family-colores-negro",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "ROJO",
+        "image": "/symbols/family/colores/rojo.png",
+        "id": "family-colores-rojo",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "ROSA",
+        "image": "/symbols/family/colores/rosa.png",
+        "id": "family-colores-rosa",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "VERDE",
+        "image": "/symbols/family/colores/verde.png",
+        "id": "family-colores-verde",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "VIOLETA",
+        "image": "/symbols/family/colores/violeta.png",
+        "id": "family-colores-violeta",
+        "type": "button",
+        "borderColor": "blue"
+      }
+    ]
+  },
+  {
     "id": "family-lugares",
     "name": "Family LUGARES",
     "author": "Family",
@@ -576,7 +596,7 @@
     "hidden": false,
     "tiles": [
       {
-        "label": "JARDIN",
+        "label": "JARDÍN",
         "image": "/symbols/family/lugares/jardin.png",
         "id": "family-lugares-jardin",
         "type": "button",
@@ -689,7 +709,7 @@
         "borderColor": "blue"
       },
       {
-        "label": "TIBUCAN",
+        "label": "TIBUCÁN",
         "image": "/symbols/family/dibus/tibucan.png",
         "id": "family-dibus-tibucan",
         "type": "button",
@@ -703,14 +723,14 @@
         "borderColor": "blue"
       },
       {
-        "label": "BLIPPI",
+        "label": "ISA",
         "image": "/symbols/family/dibus/blippi.png",
         "id": "family-dibus-blippi",
         "type": "button",
         "borderColor": "blue"
       },
       {
-        "label": "RUBBLE Y EQUIPO",
+        "label": "VE PERRO VE",
         "image": "/symbols/family/dibus/rubble-y-equipo.png",
         "id": "family-dibus-rubble-y-equipo",
         "type": "button",

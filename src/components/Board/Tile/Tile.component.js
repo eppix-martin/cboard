@@ -58,7 +58,7 @@ const Tile = props => {
   const tileShapeStyles = {};
 
   if (borderColor) {
-    tileShapeStyles.borderColor = borderColor;
+    tileShapeStyles['--tile-border-color'] = borderColor;
   }
 
   if (backgroundColor) {

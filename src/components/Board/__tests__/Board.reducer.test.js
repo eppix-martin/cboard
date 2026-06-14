@@ -102,7 +102,7 @@ describe('reducer', () => {
         'cboard.components.CommunicatorToolbar.familyRootBoardDescription'
       ]
     ).toBe('Tablero familiar local con categorías de pictogramas generados.');
-    expect(familyRootBoard.caption).toBe('/symbols/family/personas/mama.png');
+    expect(familyRootBoard.caption).toBe('/symbols/family/personas/abril.png');
   });
   it('should expose generated family pictogram categories', () => {
     const [familyRootBoard] = DEFAULT_BOARDS.family;
@@ -123,7 +123,7 @@ describe('reducer', () => {
         id: 'family-root-personas',
         loadBoard: 'family-personas',
         label: 'PERSONAS',
-        image: '/symbols/family/personas/mama.png',
+        image: '/symbols/family/personas/abril.png',
         type: 'folder',
         linkedBoard: true,
         borderColor: 'red'
@@ -147,6 +147,15 @@ describe('reducer', () => {
         borderColor: 'blue'
       },
       {
+        id: 'family-root-colores',
+        loadBoard: 'family-colores',
+        label: 'COLORES',
+        image: '/symbols/family/colores/azul.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'blue'
+      },
+      {
         id: 'family-root-lugares',
         loadBoard: 'family-lugares',
         label: 'LUGARES',
@@ -158,7 +167,7 @@ describe('reducer', () => {
       {
         id: 'family-root-conversacion',
         loadBoard: 'family-conversacion',
-        label: 'CONVERSACION',
+        label: 'CONVERSACIÓN',
         image: '/symbols/family/conversacion/hola.png',
         type: 'folder',
         linkedBoard: true,
@@ -189,6 +198,7 @@ describe('reducer', () => {
     );
     const categoryBorderColors = {
       acciones: 'green',
+      colores: 'blue',
       conversacion: undefined,
       cosas: 'blue',
       dibus: 'blue',
@@ -197,12 +207,25 @@ describe('reducer', () => {
     };
     const categories = [
       'acciones',
+      'colores',
       'conversacion',
       'cosas',
       'dibus',
       'lugares',
       'personas'
     ];
+    const labelOverrides = {
+      'colores/marron': 'MARRÓN',
+      'dibus/blippi': 'ISA',
+      'dibus/rubble-y-equipo': 'VE PERRO VE',
+      'dibus/tibucan': 'TIBUCÁN',
+      'cosas/muneca': 'MUÑECA',
+      'cosas/tobogan': 'TOBOGÁN',
+      'cosas/tunel': 'TÚNEL',
+      'lugares/jardin': 'JARDÍN',
+      'personas/mama': 'MAMÁ',
+      'personas/papa': 'PAPÁ'
+    };
 
     categories.forEach(category => {
       const pngFiles = fs
@@ -211,9 +234,10 @@ describe('reducer', () => {
         .sort();
       const expectedTiles = pngFiles.map(fileName => {
         const symbolId = path.basename(fileName, '.png');
+        const labelOverride = labelOverrides[`${category}/${symbolId}`];
         const expectedTile = {
           id: `family-${category}-${symbolId}`,
-          label: symbolId.replace(/-/g, ' ').toUpperCase(),
+          label: labelOverride || symbolId.replace(/-/g, ' ').toUpperCase(),
           image: `/symbols/family/${category}/${fileName}`,
           type: 'button'
         };
