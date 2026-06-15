@@ -73,6 +73,14 @@ export function getBoardGridRows(board) {
   return undefined;
 }
 
+export function canEditGridLayout(board, isSelecting, isSaving) {
+  if (isFamilyBoard(board)) {
+    return false;
+  }
+
+  return isSelecting && !isSaving;
+}
+
 export class Board extends Component {
   static propTypes = {
     board: PropTypes.shape({
@@ -390,7 +398,8 @@ export class Board extends Component {
         <div
           className={classNames('Board', {
             'is-locked': this.props.isLocked,
-            'Board--family': isFamilyBoard(board)
+            'Board--family': isFamilyBoard(board),
+            'Board--selecting': isSelecting
           })}
         >
           <BoardTour
@@ -512,7 +521,7 @@ export class Board extends Component {
                     <Grid
                       key={board.id}
                       board={board}
-                      edit={isSelecting && !isSaving}
+                      edit={canEditGridLayout(board, isSelecting, isSaving)}
                       cols={cols}
                       rows={rows}
                       onLayoutChange={onLayoutChange}

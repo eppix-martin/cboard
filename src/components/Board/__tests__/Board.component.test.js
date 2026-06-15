@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import Board, {
+  canEditGridLayout,
   getBoardGridCols,
   getBoardGridRows,
   isFamilyBoard
@@ -106,5 +107,15 @@ describe('family board layout', () => {
 
   it('keeps default grid rows for non-family boards', () => {
     expect(getBoardGridRows({ id: 'root' })).toBeUndefined();
+  });
+
+  it('keeps family boards visually stable in selection mode', () => {
+    expect(canEditGridLayout({ id: 'family-personas' }, true, false)).toBe(
+      false
+    );
+  });
+
+  it('allows non-family boards to edit the grid layout in selection mode', () => {
+    expect(canEditGridLayout({ id: 'root' }, true, false)).toBe(true);
   });
 });
