@@ -5,7 +5,6 @@ import { injectIntl, intlShape } from 'react-intl';
 
 import registerServiceWorker from '../../registerServiceWorker';
 import { showNotification } from '../Notifications/Notifications.actions';
-import { setRefreshHandler } from '../Notifications/Notifications.refreshHandler';
 import { isFirstVisit, isLogged } from './App.selectors';
 import messages from './App.messages';
 import App from './App.component';
@@ -185,9 +184,8 @@ export class AppContainer extends Component {
 
   handleCvaResume = () => this.handleDataRefresh('App resumed');
 
-  handleNewContentAvailable = updateContext => {
+  handleNewContentAvailable = () => {
     const { intl, showNotification } = this.props;
-    setRefreshHandler(updateContext && updateContext.refresh);
     showNotification(
       intl.formatMessage(messages.newContentAvailable),
       'refresh'

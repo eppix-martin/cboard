@@ -14,7 +14,6 @@ import {
 import { updateIsInFreeCountry } from '../../providers/SubscriptionProvider/SubscriptionProvider.actions';
 import { changeElevenLabsApiKey } from '../../providers/SpeechProvider/SpeechProvider.actions';
 import tts from '../../providers/SpeechProvider/tts';
-import { LOCAL_BACKEND_DISABLED } from '../../constants';
 
 export function updateConnectivity({ isConnected = false }) {
   return {
@@ -140,10 +139,6 @@ export function updateUnloggedUserLocation() {
     } = getState();
     try {
       if (unloggedUserLocation) return;
-      if (LOCAL_BACKEND_DISABLED) {
-        dispatch(updateIsInFreeCountry());
-        return;
-      }
       const location = await API.getUserLocation();
       if (location) {
         dispatch(setUnloggedUserLocation(location));

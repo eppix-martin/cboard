@@ -46,19 +46,6 @@ describe('reducer', () => {
   it('should return the initial state', () => {
     expect(communicatorReducer(undefined, {})).toEqual(initialState);
   });
-  it('should use the family root board in the default communicator', () => {
-    const [defaultCommunicator] = communicatorReducer(
-      undefined,
-      {}
-    ).communicators;
-
-    expect(defaultCommunicator.rootBoard).toBe('family-root');
-    expect(defaultCommunicator.boards).toContain('family-root');
-    expect(defaultCommunicator.defaultBoardsIncluded[0]).toEqual({
-      nameOnJSON: 'family',
-      homeBoard: 'family-root'
-    });
-  });
   it('should handle login ', () => {
     const login = {
       type: LOGIN_SUCCESS,

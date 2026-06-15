@@ -30,10 +30,6 @@ export const AZURE_VOICES_BASE_PATH_API =
 export const NODE_ENV = process.env.NODE_ENV;
 export const IS_PRODUCTION = NODE_ENV === 'production';
 const HOSTNAME = window.location.hostname;
-export const IS_LOCALHOST =
-  HOSTNAME === 'localhost' || HOSTNAME === '127.0.0.1' || HOSTNAME === '[::1]';
-export const LOCAL_BACKEND_DISABLED =
-  !isCordova() && !DEV_API_URL && IS_LOCALHOST;
 export const ADSENSE_ON_PRODUCTION =
   HOSTNAME === 'app.cboard.io' && NODE_ENV === 'production';
 export const ADTEST_AVAILABLE =

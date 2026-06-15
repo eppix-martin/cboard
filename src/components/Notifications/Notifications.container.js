@@ -3,10 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { hideNotification, showNotification } from './Notifications.actions';
 import Notifications from './Notifications.component';
-import {
-  clearRefreshHandler,
-  refreshPage
-} from './Notifications.refreshHandler';
 
 class NotificationsContainer extends Component {
   static propTypes = {
@@ -73,7 +69,6 @@ class NotificationsContainer extends Component {
       return;
     }
     hideNotification();
-    clearRefreshHandler();
     this.showQueuedNotificationIfAny();
   };
 
@@ -104,7 +99,6 @@ class NotificationsContainer extends Component {
         open={open}
         message={message}
         kind={kind}
-        onRefreshPage={refreshPage}
         handleNotificationDismissal={this.handleNotificationDismissal}
       />
     );

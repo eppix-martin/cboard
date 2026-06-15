@@ -1,14 +1,5 @@
-jest.mock('react-intl', () => ({
-  defineMessages: messages => messages
-}));
-
-import fs from 'fs';
-import path from 'path';
 import boardReducer from '../Board.reducer';
-import { DEFAULT_BOARDS, FAMILY_BOARDS_VERSION } from '../../../helpers';
-import messages from '../../Communicator/CommunicatorToolbar/CommunicatorToolbar.messages';
-import sourceTranslations from '../../../translations/src/cboard.json';
-import spanishTranslations from '../../../translations/es-ES.json';
+import { DEFAULT_BOARDS } from '../../../helpers';
 import {
   ADD_BOARDS,
   CHANGE_BOARD,
@@ -53,14 +44,9 @@ const mockBoard = {
   email: 'asd@qwe.com',
   markToUpdate: true
 };
-const [...boards] = [
-  ...DEFAULT_BOARDS.family,
-  ...DEFAULT_BOARDS.advanced,
-  ...DEFAULT_BOARDS.picSeePal
-];
+const [...boards] = [...DEFAULT_BOARDS.advanced, ...DEFAULT_BOARDS.picSeePal];
 const initialState = {
   boards,
-  familyBoardsVersion: FAMILY_BOARDS_VERSION,
   syncMeta: {},
   output: [],
   activeBoardId: null,
@@ -78,192 +64,6 @@ const initialState = {
 describe('reducer', () => {
   it('should return the initial state', () => {
     expect(boardReducer(undefined, {})).toEqual(initialState);
-  });
-  it('should include the family root board first in the initial state', () => {
-    const state = boardReducer(undefined, {});
-
-    expect(DEFAULT_BOARDS.family[0].id).toBe('family-root');
-    expect(state.boards[0].id).toBe('family-root');
-  });
-  it('should provide gallery metadata for the family root board', () => {
-    const [familyRootBoard] = DEFAULT_BOARDS.family;
-
-    expect(familyRootBoard.description).toBe('familyRootBoardDescription');
-    expect(messages[familyRootBoard.description]).toEqual({
-      id: 'cboard.components.CommunicatorToolbar.familyRootBoardDescription',
-      defaultMessage: 'Local family board with generated pictogram categories.'
-    });
-    expect(
-      sourceTranslations[
-        'cboard.components.CommunicatorToolbar.familyRootBoardDescription'
-      ]
-    ).toBe('Local family board with generated pictogram categories.');
-    expect(
-      spanishTranslations[
-        'cboard.components.CommunicatorToolbar.familyRootBoardDescription'
-      ]
-    ).toBe('Tablero familiar local con categorías de pictogramas generados.');
-    expect(familyRootBoard.caption).toBe('/symbols/family/personas/abril.png');
-  });
-  it('should expose generated family pictogram categories', () => {
-    const [familyRootBoard] = DEFAULT_BOARDS.family;
-    const rootTiles = familyRootBoard.tiles;
-
-    expect(
-      rootTiles.map(tile => ({
-        id: tile.id,
-        loadBoard: tile.loadBoard,
-        label: tile.label,
-        image: tile.image,
-        type: tile.type,
-        linkedBoard: tile.linkedBoard,
-        borderColor: tile.borderColor
-      }))
-    ).toEqual([
-      {
-        id: 'family-root-personas',
-        loadBoard: 'family-personas',
-        label: 'PERSONAS',
-        image: '/symbols/family/personas/abril.png',
-        type: 'folder',
-        linkedBoard: true,
-        borderColor: 'red'
-      },
-      {
-        id: 'family-root-acciones',
-        loadBoard: 'family-acciones',
-        label: 'ACCIONES',
-        image: '/symbols/family/acciones/jugar.png',
-        type: 'folder',
-        linkedBoard: true,
-        borderColor: 'green'
-      },
-      {
-        id: 'family-root-cosas',
-        loadBoard: 'family-cosas',
-        label: 'COSAS',
-        image: '/symbols/family/cosas/agua.png',
-        type: 'folder',
-        linkedBoard: true,
-        borderColor: 'blue'
-      },
-      {
-        id: 'family-root-colores',
-        loadBoard: 'family-colores',
-        label: 'COLORES',
-        image: '/symbols/family/colores/azul.png',
-        type: 'folder',
-        linkedBoard: true,
-        borderColor: 'blue'
-      },
-      {
-        id: 'family-root-lugares',
-        loadBoard: 'family-lugares',
-        label: 'LUGARES',
-        image: '/symbols/family/lugares/casa.png',
-        type: 'folder',
-        linkedBoard: true,
-        borderColor: 'black'
-      },
-      {
-        id: 'family-root-conversacion',
-        loadBoard: 'family-conversacion',
-        label: 'CONVERSACIÓN',
-        image: '/symbols/family/conversacion/hola.png',
-        type: 'folder',
-        linkedBoard: true,
-        borderColor: undefined
-      },
-      {
-        id: 'family-root-dibus',
-        loadBoard: 'family-dibus',
-        label: 'DIBUS',
-        image: '/symbols/family/dibus/bluey.png',
-        type: 'folder',
-        linkedBoard: true,
-        borderColor: 'blue'
-      }
-    ]);
-  });
-  it('should include every generated family PNG with stable labels, paths, and borders', () => {
-    const familyBoardsById = DEFAULT_BOARDS.family.reduce(
-      (boardsById, board) => {
-        boardsById[board.id] = board;
-        return boardsById;
-      },
-      {}
-    );
-    const familySymbolsPath = path.resolve(
-      __dirname,
-      '../../../../public/symbols/family'
-    );
-    const categoryBorderColors = {
-      acciones: 'green',
-      colores: 'blue',
-      conversacion: undefined,
-      cosas: 'blue',
-      dibus: 'blue',
-      lugares: 'black',
-      personas: 'red'
-    };
-    const categories = [
-      'acciones',
-      'colores',
-      'conversacion',
-      'cosas',
-      'dibus',
-      'lugares',
-      'personas'
-    ];
-    const labelOverrides = {
-      'colores/marron': 'MARRÓN',
-      'dibus/blippi': 'ISA',
-      'dibus/rubble-y-equipo': 'VE PERRO VE',
-      'dibus/tibucan': 'TIBUCÁN',
-      'cosas/muneca': 'MUÑECA',
-      'cosas/tobogan': 'TOBOGÁN',
-      'cosas/tunel': 'TÚNEL',
-      'lugares/jardin': 'JARDÍN',
-      'personas/mama': 'MAMÁ',
-      'personas/papa': 'PAPÁ'
-    };
-
-    categories.forEach(category => {
-      const pngFiles = fs
-        .readdirSync(path.join(familySymbolsPath, category))
-        .filter(fileName => path.extname(fileName) === '.png')
-        .sort();
-      const expectedTiles = pngFiles.map(fileName => {
-        const symbolId = path.basename(fileName, '.png');
-        const labelOverride = labelOverrides[`${category}/${symbolId}`];
-        const expectedTile = {
-          id: `family-${category}-${symbolId}`,
-          label: labelOverride || symbolId.replace(/-/g, ' ').toUpperCase(),
-          image: `/symbols/family/${category}/${fileName}`,
-          type: 'button'
-        };
-        const borderColor = categoryBorderColors[category];
-
-        if (borderColor) {
-          expectedTile.borderColor = borderColor;
-        }
-
-        return expectedTile;
-      });
-      const actualTiles = familyBoardsById[`family-${category}`].tiles
-        .map(tile => ({
-          id: tile.id,
-          label: tile.label,
-          image: tile.image,
-          type: tile.type,
-          ...(tile.borderColor ? { borderColor: tile.borderColor } : {})
-        }))
-        .sort((firstTile, secondTile) =>
-          firstTile.id.localeCompare(secondTile.id)
-        );
-
-      expect(actualTiles).toEqual(expectedTiles);
-    });
   });
   it('should handle logout', () => {
     const logout = {

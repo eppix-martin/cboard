@@ -22,7 +22,7 @@ import { isLogged } from '../../components/App/App.selectors';
 import { isAndroid, isIOS } from '../../cordova-util';
 import { formatTitle } from '../../components/Settings/Subscribe/Subscribe.helpers';
 import { updateNavigationSettings } from '../../components/App/App.actions';
-import { IS_PRODUCTION, LOCAL_BACKEND_DISABLED } from '../../constants';
+import { IS_PRODUCTION } from '../../constants';
 
 export function updateIsInFreeCountry() {
   return (dispatch, getState) => {
@@ -295,9 +295,8 @@ export function updateIsSubscribed(requestOrigin = 'unkwnown') {
 
 export function updatePlans() {
   return async (dispatch, getState) => {
+    const state = getState();
     try {
-      if (LOCAL_BACKEND_DISABLED) return;
-      const state = getState();
       const { data } = await API.listSubscriptions();
       const locationCode = isLogged(state)
         ? state.app.userData?.location?.countryCode

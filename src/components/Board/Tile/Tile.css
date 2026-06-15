@@ -1,5 +1,4 @@
 .Tile {
-  position: relative;
   height: 100%;
   width: 100%;
   padding: 10px 5px 0 5px;
@@ -11,10 +10,6 @@
 
   /* HACK: fixes iOS flicker on scroll */
   transform: translateZ(0);
-}
-
-.Tile::after {
-  pointer-events: none;
 }
 
 .Tile:not(.scanner__focused) {
@@ -51,7 +46,7 @@
 .TileShape::before,
 .TileShape--folder::after {
   background: inherit;
-  border: 3px solid var(--tile-border-color, transparent);
+  border: 3px solid transparent;
   z-index: -1;
 }
 
@@ -95,49 +90,4 @@
 .Tile:not(:focus):hover .TileShape--folder::after {
   border-color: rgba(0, 0, 0, 0.5);
   transition: none;
-}
-
-.Board--family .TileShape::before,
-.Board--family .TileShape--folder::after {
-  border-width: 0;
-  box-shadow: none;
-}
-
-.Board--family .Tile {
-  --family-tile-border-width: 6px;
-  --family-tile-border-inset: 8px;
-  --family-tile-content-inset: 16px;
-  padding: 8px;
-}
-
-.Board--family .TileShape--folder::before {
-  top: 0;
-  border-radius: 8%;
-}
-
-.Board--family .TileShape--folder::after {
-  display: none;
-}
-
-.Board--family .Tile::after {
-  content: '';
-  position: absolute;
-  top: var(--family-tile-border-inset);
-  right: var(--family-tile-border-inset);
-  bottom: var(--family-tile-border-inset);
-  left: var(--family-tile-border-inset);
-  z-index: 3;
-  border: var(--family-tile-border-width) solid
-    var(--tile-border-color, transparent);
-  border-radius: 8%;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
-}
-
-.Board--family .Tile:focus::after,
-.Board--family .Tile:active::after {
-  border-color: rgb(0, 0, 0);
-}
-
-.Board--family .Tile:not(:focus):hover::after {
-  border-color: rgba(0, 0, 0, 0.5);
 }

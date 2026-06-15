@@ -35,8 +35,6 @@ export class OutputContainer extends Component {
      */
     intl: intlShape,
     clickOutput: PropTypes.func.isRequired,
-    onTemporaryBoardClick: PropTypes.func,
-    hideTemporaryBoardButton: PropTypes.bool,
     /**
      * Array of symbols
      */
@@ -201,22 +199,6 @@ export class OutputContainer extends Component {
     this.clearOutput();
   };
 
-  handleTemporaryBoardClick = () => {
-    const { cancelSpeech, onTemporaryBoardClick, output } = this.props;
-    const temporaryBoardSymbols = output.filter(
-      symbol => symbol.type !== 'live'
-    );
-
-    if (!temporaryBoardSymbols.length) {
-      return;
-    }
-
-    cancelSpeech();
-    if (onTemporaryBoardClick) {
-      onTemporaryBoardClick(temporaryBoardSymbols);
-    }
-  };
-
   handlePhraseToShare = () => {
     if (this.props.output.length) {
       const labels = this.props.output.map(symbol => symbol.label);
@@ -340,16 +322,13 @@ export class OutputContainer extends Component {
       output,
       navigationSettings,
       isLiveMode,
-      increaseOutputButtons,
-      hideTemporaryBoardButton
+      increaseOutputButtons
     } = this.props;
     const tabIndex = output.length ? '0' : '-1';
     return (
       <SymbolOutput
         onBackspaceClick={this.handleBackspaceClick}
         onClearClick={this.handleClearClick}
-        onTemporaryBoardClick={this.handleTemporaryBoardClick}
-        hideTemporaryBoardButton={hideTemporaryBoardButton}
         onCopyClick={this.handleCopyClick}
         onRemoveClick={this.handleRemoveClick}
         onClick={isLiveMode ? undefined : this.handleOutputClick}

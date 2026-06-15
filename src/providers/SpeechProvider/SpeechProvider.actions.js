@@ -30,7 +30,6 @@ import {
   getVoiceURI,
   filterLocalLangs
 } from '../../i18n';
-import { DEFAULT_LANG } from '../../components/App/App.constants';
 import tts from './tts';
 import { showNotification } from '../../components/Notifications/Notifications.actions';
 
@@ -103,10 +102,12 @@ export function updateLangSpeechStatus(voices) {
 
       dispatch(setLangs(supportedLangs, localLangs));
 
-      const lang = supportedLangs.includes(DEFAULT_LANG)
-        ? DEFAULT_LANG
+      // now we set the actual language based on the state
+      const language = getState().language.lang;
+      const lang = supportedLangs.includes(language)
+        ? language
         : getDefaultLang(supportedLangs);
-      dispatch(changeLang(DEFAULT_LANG));
+      dispatch(changeLang(lang));
 
       // last step is to change voice in case it is available
       if (

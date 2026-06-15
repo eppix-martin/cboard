@@ -9,7 +9,6 @@ import Switch from '@material-ui/core/Switch';
 import Symbol from '../../Symbol';
 import BackspaceButton from './BackspaceButton';
 import ClearButton from './ClearButton';
-import TemporaryBoardButton from './TemporaryBoardButton';
 import messages from '../../Board.messages';
 import PhraseShare from '../PhraseShare';
 import Scroll from './Scroll';
@@ -83,8 +82,6 @@ class SymbolOutput extends PureComponent {
       intl,
       onBackspaceClick,
       onClearClick,
-      onTemporaryBoardClick,
-      hideTemporaryBoardButton,
       getPhraseToShare,
       onCopyClick,
       onRemoveClick,
@@ -102,9 +99,6 @@ class SymbolOutput extends PureComponent {
       visibility: symbols.length ? 'visible' : 'hidden'
     };
 
-    const temporaryBoardSymbols = symbols.filter(
-      symbol => symbol.type !== 'live'
-    );
     const copyButtonStyle = {
       visibility: symbols.length ? 'visible' : 'hidden'
     };
@@ -176,13 +170,6 @@ class SymbolOutput extends PureComponent {
             />
           )}
 
-          {temporaryBoardSymbols.length > 0 && !hideTemporaryBoardButton && (
-            <TemporaryBoardButton
-              color="inherit"
-              onClick={onTemporaryBoardClick}
-              increaseOutputButtons={increaseOutputButtons}
-            />
-          )}
           {!navigationSettings.removeOutputActive && (
             <BackspaceButton
               color="inherit"

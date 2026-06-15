@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { DEFAULT_BOARDS, FAMILY_BOARDS_VERSION, deepCopy } from '../../helpers';
+import { DEFAULT_BOARDS, deepCopy } from '../../helpers';
 import { isLocalBoard, isServerBoard } from './Board.utils';
 
 import {
@@ -48,14 +48,12 @@ import {
 import { LOGOUT, LOGIN_SUCCESS } from '../Account/Login/Login.constants';
 
 const initialBoardsState = [
-  ...DEFAULT_BOARDS.family,
   ...DEFAULT_BOARDS.advanced,
   ...DEFAULT_BOARDS.picSeePal
 ];
 
 const initialState = {
   boards: deepCopy(initialBoardsState),
-  familyBoardsVersion: FAMILY_BOARDS_VERSION,
   syncMeta: {},
   output: [],
   activeBoardId: null,
