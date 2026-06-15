@@ -97,6 +97,10 @@
 }
 
 .Board--family .Tile .Symbol {
+  top: var(--family-tile-content-inset);
+  left: var(--family-tile-content-inset);
+  width: calc(100% - (var(--family-tile-content-inset) * 2));
+  height: calc(100% - (var(--family-tile-content-inset) * 2));
   padding-top: 0;
   z-index: 1;
 }

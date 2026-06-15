@@ -98,7 +98,6 @@ it('on tile click and props', () => {
     '--tile-border-color': '#ffffff'
   });
   expect(wrapper.find('.TileShape').prop('style')).toEqual({
-    '--tile-border-color': '#ffffff',
     backgroundColor: '#ffffff'
   });
 });
