@@ -19,6 +19,15 @@
         "borderColor": "red"
       },
       {
+        "label": "COLE",
+        "image": "/symbols/family/cole/sara.png",
+        "loadBoard": "family-cole",
+        "id": "family-root-cole",
+        "type": "folder",
+        "linkedBoard": true,
+        "borderColor": "red"
+      },
+      {
         "label": "ACCIONES",
         "image": "/symbols/family/acciones/jugar.png",
         "loadBoard": "family-acciones",
@@ -177,6 +186,80 @@
         "label": "GABY",
         "image": "/symbols/family/personas/gaby.png",
         "id": "family-personas-gaby",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "HERNAN",
+        "image": "/symbols/family/personas/hernan.png",
+        "id": "family-personas-hernan",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "VALEN",
+        "image": "/symbols/family/personas/valen.png",
+        "id": "family-personas-valen",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "RENU",
+        "image": "/symbols/family/personas/renu.png",
+        "id": "family-personas-renu",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "JULY",
+        "image": "/symbols/family/personas/july.png",
+        "id": "family-personas-july",
+        "type": "button",
+        "borderColor": "red"
+      }
+    ]
+  },
+  {
+    "id": "family-cole",
+    "name": "Family COLE",
+    "author": "Family",
+    "description": "Local family cole board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "SARA",
+        "image": "/symbols/family/cole/sara.png",
+        "id": "family-cole-sara",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "JOAQUIN",
+        "image": "/symbols/family/cole/joaquin.png",
+        "id": "family-cole-joaquin",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "JUANSE",
+        "image": "/symbols/family/cole/juanse.png",
+        "id": "family-cole-juanse",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "VALEN",
+        "image": "/symbols/family/personas/valen.png",
+        "id": "family-cole-valen",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "IVI",
+        "image": "/symbols/family/cole/ivi.png",
+        "id": "family-cole-ivi",
         "type": "button",
         "borderColor": "red"
       }
