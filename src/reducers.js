@@ -198,14 +198,15 @@ export const boardMigrations = {
       syncMeta: state.board?.syncMeta ?? {}
     }
   }),
-  2: migrateCodeOwnedFamilyBoards
+  2: migrateCodeOwnedFamilyBoards,
+  3: migrateCodeOwnedFamilyBoards
 };
 
 const config = {
   key: 'root',
   storage: migratingStorage,
   blacklist: ['language'],
-  version: 2,
+  version: 3,
   migrate: createMigrate(boardMigrations, { debug: false })
 };
 
