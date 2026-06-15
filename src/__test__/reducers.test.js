@@ -408,4 +408,45 @@ describe('boardMigrations', () => {
       expect(defaultCommunicator.boards).toEqual(['root', 'family-root']);
     });
   });
+
+  describe('migration 5 – refreshed family board defaults', () => {
+    it('refreshes already-migrated persisted family boards to the current defaults', () => {
+      const staleColeBoard = {
+        ...DEFAULT_BOARDS.family.find(board => board.id === 'family-cole'),
+        tiles: [{ id: 'family-cole-old', label: 'OLD' }]
+      };
+      const userBoard = { id: 'user-board', email: 'user@example.com' };
+      const state = {
+        board: {
+          boards: [staleColeBoard, userBoard],
+          syncMeta: {},
+          activeBoardId: 'family-root',
+          navHistory: ['family-root'],
+          familyBoardsVersion: FAMILY_BOARDS_VERSION - 1
+        },
+        communicator: {
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'family-root',
+              boards: ['root', 'family-root']
+            }
+          ]
+        }
+      };
+
+      const result = boardMigrations[5](state);
+      const refreshedColeBoard = result.board.boards.find(
+        board => board.id === 'family-cole'
+      );
+
+      expect(refreshedColeBoard).toEqual(
+        DEFAULT_BOARDS.family.find(board => board.id === 'family-cole')
+      );
+      expect(result.board.boards).toContainEqual(userBoard);
+      expect(result.board.familyBoardsVersion).toBe(FAMILY_BOARDS_VERSION);
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+    });
+  });
 });

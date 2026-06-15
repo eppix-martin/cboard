@@ -130,6 +130,15 @@ describe('reducer', () => {
         borderColor: 'red'
       },
       {
+        id: 'family-root-cole',
+        loadBoard: 'family-cole',
+        label: 'COLE',
+        image: '/symbols/family/cole/sara.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'red'
+      },
+      {
         id: 'family-root-acciones',
         loadBoard: 'family-acciones',
         label: 'ACCIONES',
@@ -199,6 +208,7 @@ describe('reducer', () => {
     );
     const categoryBorderColors = {
       acciones: 'green',
+      cole: 'red',
       colores: 'blue',
       conversacion: undefined,
       cosas: 'blue',
@@ -208,6 +218,7 @@ describe('reducer', () => {
     };
     const categories = [
       'acciones',
+      'cole',
       'colores',
       'conversacion',
       'cosas',
@@ -215,6 +226,17 @@ describe('reducer', () => {
       'lugares',
       'personas'
     ];
+    const sharedTiles = {
+      cole: [
+        {
+          id: 'family-cole-valen',
+          label: 'VALEN',
+          image: '/symbols/family/personas/valen.png',
+          type: 'button',
+          borderColor: 'red'
+        }
+      ]
+    };
     const labelOverrides = {
       'colores/marron': 'MARRÓN',
       'dibus/blippi': 'ISA',
@@ -250,6 +272,8 @@ describe('reducer', () => {
 
         return expectedTile;
       });
+      expectedTiles.push(...(sharedTiles[category] || []));
+
       const actualTiles = familyBoardsById[`family-${category}`].tiles
         .map(tile => ({
           id: tile.id,

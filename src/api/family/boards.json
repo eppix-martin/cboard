@@ -176,13 +176,6 @@
         "borderColor": "red"
       },
       {
-        "label": "DELFI",
-        "image": "/symbols/family/personas/delfi.png",
-        "id": "family-personas-delfi",
-        "type": "button",
-        "borderColor": "red"
-      },
-      {
         "label": "GABY",
         "image": "/symbols/family/personas/gaby.png",
         "id": "family-personas-gaby",
@@ -260,6 +253,20 @@
         "label": "IVI",
         "image": "/symbols/family/cole/ivi.png",
         "id": "family-cole-ivi",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "DELFI",
+        "image": "/symbols/family/cole/delfi.png",
+        "id": "family-cole-delfi",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "GENA",
+        "image": "/symbols/family/cole/gena.png",
+        "id": "family-cole-gena",
         "type": "button",
         "borderColor": "red"
       }
