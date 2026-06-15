@@ -133,6 +133,16 @@ describe('family board layout', () => {
     });
   });
 
+  it('uses taller rows for family boards in selection mode', () => {
+    expect(getBoardGridRows({ id: 'family-personas' }, true)).toEqual({
+      lg: 1,
+      md: 1,
+      sm: 1,
+      xs: 1,
+      xxs: 2
+    });
+  });
+
   it('keeps default grid rows for non-family boards', () => {
     expect(getBoardGridRows({ id: 'root' })).toBeUndefined();
   });

@@ -53,6 +53,14 @@ const FAMILY_BOARD_GRID_ROWS = {
   xxs: 3
 };
 
+const FAMILY_BOARD_SELECTING_GRID_ROWS = {
+  lg: 1,
+  md: 1,
+  sm: 1,
+  xs: 1,
+  xxs: 2
+};
+
 export function isFamilyBoard(board) {
   return Boolean(board && board.id && board.id.indexOf('family-') === 0);
 }
@@ -65,8 +73,12 @@ export function getBoardGridCols(board, displaySettings) {
   return DISPLAY_SIZE_GRID_COLS[displaySettings.uiSize];
 }
 
-export function getBoardGridRows(board) {
+export function getBoardGridRows(board, isSelecting = false) {
   if (isFamilyBoard(board)) {
+    if (isSelecting) {
+      return FAMILY_BOARD_SELECTING_GRID_ROWS;
+    }
+
     return FAMILY_BOARD_GRID_ROWS;
   }
 
@@ -385,7 +397,7 @@ export class Board extends Component {
 
     const tiles = this.renderTiles(board.tiles);
     const cols = getBoardGridCols(board, this.props.displaySettings);
-    const rows = getBoardGridRows(board);
+    const rows = getBoardGridRows(board, isSelecting);
     const isLoggedIn = !!userData.email;
     const isNavigationButtonsOnTheSide =
       navigationSettings.navigationButtonsStyle === undefined ||
