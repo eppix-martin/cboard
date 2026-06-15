@@ -1,7 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Board, { getBoardGridCols, isFamilyBoard } from '../Board.component';
+import Board, {
+  getBoardGridCols,
+  getBoardGridRows,
+  isFamilyBoard
+} from '../Board.component';
 jest.mock('../Board.messages', () => ({
   editTitle: {
     id: 'cboard.components.Board.editTitle',
@@ -88,5 +92,19 @@ describe('family board layout', () => {
       xs: 4,
       xxs: 3
     });
+  });
+
+  it('uses fewer rows for non-fixed family boards so tablet tiles are taller', () => {
+    expect(getBoardGridRows({ id: 'family-personas' })).toEqual({
+      lg: 2,
+      md: 2,
+      sm: 2,
+      xs: 2,
+      xxs: 3
+    });
+  });
+
+  it('keeps default grid rows for non-family boards', () => {
+    expect(getBoardGridRows({ id: 'root' })).toBeUndefined();
   });
 });

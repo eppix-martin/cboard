@@ -30,7 +30,8 @@ const propTypes = {
    * Unique id for the tile key, used for React reconciliation.
    * Should be unique among siblings.
    */
-  id: PropTypes.string
+  id: PropTypes.string,
+  style: PropTypes.object
 };
 
 const defaultProps = {};
@@ -43,6 +44,7 @@ const Tile = props => {
     className: classNameProp,
     variant,
     id,
+    style: styleProp,
     ...other
   } = props;
 
@@ -55,9 +57,11 @@ const Tile = props => {
     'TileShape--folder': folder
   });
 
+  const tileStyles = { ...styleProp };
   const tileShapeStyles = {};
 
   if (borderColor) {
+    tileStyles['--tile-border-color'] = borderColor;
     tileShapeStyles['--tile-border-color'] = borderColor;
   }
 
@@ -73,7 +77,13 @@ const Tile = props => {
 
   return (
     <Scannable onSelect={onSelect} id={'scannable'}>
-      <button className={className} type="button" key={id} {...other}>
+      <button
+        className={className}
+        type="button"
+        key={id}
+        style={tileStyles}
+        {...other}
+      >
         <div className={tileShapeClassName} style={tileShapeStyles} />
         {children}
       </button>

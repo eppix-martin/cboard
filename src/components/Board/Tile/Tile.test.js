@@ -94,6 +94,9 @@ it('on tile click and props', () => {
     onSelect: jest.fn()
   };
   const wrapper = shallow(<Tile {...props} />);
+  expect(wrapper.find('button').prop('style')).toEqual({
+    '--tile-border-color': '#ffffff'
+  });
   expect(wrapper.find('.TileShape').prop('style')).toEqual({
     '--tile-border-color': '#ffffff',
     backgroundColor: '#ffffff'

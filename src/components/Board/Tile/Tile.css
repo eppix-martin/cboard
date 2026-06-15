@@ -1,4 +1,5 @@
 .Tile {
+  position: relative;
   height: 100%;
   width: 100%;
   padding: 10px 5px 0 5px;
@@ -10,6 +11,10 @@
 
   /* HACK: fixes iOS flicker on scroll */
   transform: translateZ(0);
+}
+
+.Tile::after {
+  pointer-events: none;
 }
 
 .Tile:not(.scanner__focused) {
@@ -95,4 +100,35 @@
 .Board--family .TileShape::before,
 .Board--family .TileShape--folder::after {
   border-width: 6px;
+}
+
+.Board--family .Tile {
+  padding: 8px;
+}
+
+.Board--family .Tile::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+  left: 8px;
+  z-index: 3;
+  border: 6px solid var(--tile-border-color, transparent);
+  border-radius: 8%;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.Board--family .Tile--folder::after {
+  top: calc(8px + var(--folder-flap-height));
+  border-radius: 0 3px 3px 3px;
+}
+
+.Board--family .Tile:focus::after,
+.Board--family .Tile:active::after {
+  border-color: rgb(0, 0, 0);
+}
+
+.Board--family .Tile:not(:focus):hover::after {
+  border-color: rgba(0, 0, 0, 0.5);
 }

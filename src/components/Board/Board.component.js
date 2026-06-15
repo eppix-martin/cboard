@@ -45,6 +45,14 @@ const FAMILY_BOARD_GRID_COLS = {
   xxs: 2
 };
 
+const FAMILY_BOARD_GRID_ROWS = {
+  lg: 2,
+  md: 2,
+  sm: 2,
+  xs: 2,
+  xxs: 3
+};
+
 export function isFamilyBoard(board) {
   return Boolean(board && board.id && board.id.indexOf('family-') === 0);
 }
@@ -55,6 +63,14 @@ export function getBoardGridCols(board, displaySettings) {
   }
 
   return DISPLAY_SIZE_GRID_COLS[displaySettings.uiSize];
+}
+
+export function getBoardGridRows(board) {
+  if (isFamilyBoard(board) && !board.isFixed) {
+    return FAMILY_BOARD_GRID_ROWS;
+  }
+
+  return undefined;
 }
 
 export class Board extends Component {
@@ -357,6 +373,7 @@ export class Board extends Component {
 
     const tiles = this.renderTiles(board.tiles);
     const cols = getBoardGridCols(board, this.props.displaySettings);
+    const rows = getBoardGridRows(board);
     const isLoggedIn = !!userData.email;
     const isNavigationButtonsOnTheSide =
       navigationSettings.navigationButtonsStyle === undefined ||
@@ -497,6 +514,7 @@ export class Board extends Component {
                       board={board}
                       edit={isSelecting && !isSaving}
                       cols={cols}
+                      rows={rows}
                       onLayoutChange={onLayoutChange}
                       setIsScroll={setIsScroll}
                       isBigScrollBtns={
