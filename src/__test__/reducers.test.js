@@ -289,4 +289,123 @@ describe('boardMigrations', () => {
       expect(result.board.familyBoardsVersion).toBe(FAMILY_BOARDS_VERSION);
     });
   });
+
+  describe('migration 4 – family board as home', () => {
+    const createState = overrides => ({
+      board: {
+        boards: [],
+        syncMeta: {},
+        output: [{ id: 'spoken-tile' }],
+        images: [{ id: 'image-1' }],
+        activeBoardId: 'root',
+        navHistory: ['root'],
+        ...overrides.board
+      },
+      app: { ready: true },
+      communicator: {
+        activeCommunicatorId: 'cboard_default',
+        communicators: [
+          {
+            id: 'cboard_default',
+            rootBoard: 'root',
+            boards: ['root']
+          },
+          {
+            id: 'custom-communicator',
+            rootBoard: 'user-board',
+            boards: ['user-board']
+          }
+        ],
+        ...overrides.communicator
+      },
+      speech: { voiceURI: 'voice-1' },
+      ...overrides.root
+    });
+
+    it('moves old persisted installs from root to the family board while preserving other state', () => {
+      const nonFamilyBoard = { id: 'root', email: 'support@cboard.io' };
+      const userBoard = { id: 'user-board', email: 'user@example.com' };
+      const state = createState({
+        board: {
+          boards: [DEFAULT_BOARDS.family[0], nonFamilyBoard, userBoard]
+        }
+      });
+
+      const result = boardMigrations[4](state);
+      const defaultCommunicator = result.communicator.communicators.find(
+        communicator => communicator.id === 'cboard_default'
+      );
+      const customCommunicator = result.communicator.communicators.find(
+        communicator => communicator.id === 'custom-communicator'
+      );
+
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+      expect(defaultCommunicator.rootBoard).toBe('family-root');
+      expect(defaultCommunicator.boards).toEqual(['root', 'family-root']);
+      expect(defaultCommunicator.boards).toHaveLength(
+        new Set(defaultCommunicator.boards).size
+      );
+      expect(result.board.boards).toEqual(
+        expect.arrayContaining([nonFamilyBoard, userBoard])
+      );
+      expect(result.board.output).toEqual([{ id: 'spoken-tile' }]);
+      expect(result.board.images).toEqual([{ id: 'image-1' }]);
+      expect(result.app).toBe(state.app);
+      expect(result.speech).toBe(state.speech);
+      expect(customCommunicator).toEqual(
+        state.communicator.communicators.find(
+          communicator => communicator.id === 'custom-communicator'
+        )
+      );
+    });
+
+    it('does not duplicate family-root in the default communicator boards list', () => {
+      const state = createState({
+        communicator: {
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'root',
+              boards: ['root', 'family-root']
+            }
+          ]
+        }
+      });
+
+      const result = boardMigrations[4](state);
+      const defaultCommunicator = result.communicator.communicators[0];
+
+      expect(defaultCommunicator.boards).toEqual(['root', 'family-root']);
+    });
+
+    it('handles persisted state without a communicator slice', () => {
+      const state = createState({
+        root: { communicator: undefined }
+      });
+
+      const result = boardMigrations[4](state);
+
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+      expect(result.communicator).toBeUndefined();
+    });
+
+    it('handles persisted state without a board slice', () => {
+      const state = createState({
+        root: { board: undefined }
+      });
+
+      const result = boardMigrations[4](state);
+      const defaultCommunicator = result.communicator.communicators.find(
+        communicator => communicator.id === 'cboard_default'
+      );
+
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+      expect(result.board.boards).toEqual(DEFAULT_BOARDS.family);
+      expect(defaultCommunicator.rootBoard).toBe('family-root');
+      expect(defaultCommunicator.boards).toEqual(['root', 'family-root']);
+    });
+  });
 });
