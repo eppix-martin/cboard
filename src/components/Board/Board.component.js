@@ -58,7 +58,7 @@ export function isFamilyBoard(board) {
 }
 
 export function getBoardGridCols(board, displaySettings) {
-  if (isFamilyBoard(board) && !board.isFixed) {
+  if (isFamilyBoard(board)) {
     return FAMILY_BOARD_GRID_COLS;
   }
 
@@ -66,7 +66,7 @@ export function getBoardGridCols(board, displaySettings) {
 }
 
 export function getBoardGridRows(board) {
-  if (isFamilyBoard(board) && !board.isFixed) {
+  if (isFamilyBoard(board)) {
     return FAMILY_BOARD_GRID_ROWS;
   }
 
@@ -79,6 +79,10 @@ export function canEditGridLayout(board, isSelecting, isSaving) {
   }
 
   return isSelecting && !isSaving;
+}
+
+export function shouldUseFixedGrid(board) {
+  return Boolean(board && board.isFixed && !isFamilyBoard(board));
 }
 
 export class Board extends Component {
@@ -186,7 +190,7 @@ export class Board extends Component {
     const { onTileClick, isSelecting } = this.props;
 
     if (tile.loadBoard && !isSelecting) {
-      const boardComponentRef = this.props.board.isFixed
+      const boardComponentRef = shouldUseFixedGrid(this.props.board)
         ? 'fixedBoardContainerRef'
         : 'boardContainerRef';
       this[boardComponentRef].current.scrollTop = 0;
@@ -516,7 +520,7 @@ export class Board extends Component {
                 onKeyUp={this.handleBoardKeyUp}
                 ref={this.boardContainerRef}
               >
-                {!board.isFixed &&
+                {!shouldUseFixedGrid(board) &&
                   (tiles.length ? (
                     <Grid
                       key={board.id}
@@ -536,7 +540,7 @@ export class Board extends Component {
                     <EmptyBoard />
                   ))}
 
-                {board.isFixed && (
+                {shouldUseFixedGrid(board) && (
                   <FixedGrid
                     key={board.id}
                     order={board.grid ? board.grid.order : []}
@@ -584,7 +588,7 @@ export class Board extends Component {
                 isScroll={isScroll}
                 isSaving={isSaving}
                 boardContainer={
-                  board.isFixed
+                  shouldUseFixedGrid(board)
                     ? this.fixedBoardContainerRef
                     : this.boardContainerRef
                 }
