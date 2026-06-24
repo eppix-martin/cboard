@@ -133,7 +133,7 @@ describe('reducer', () => {
         id: 'family-root-cole',
         loadBoard: 'family-cole',
         label: 'COLE',
-        image: '/symbols/family/cole/sara.png',
+        image: '/symbols/family/cole/portada.png',
         type: 'folder',
         linkedBoard: true,
         borderColor: 'red'
@@ -226,6 +226,9 @@ describe('reducer', () => {
       'lugares',
       'personas'
     ];
+    const folderCoverFiles = {
+      cole: ['portada.png']
+    };
     const sharedTiles = {
       cole: [
         {
@@ -254,6 +257,9 @@ describe('reducer', () => {
       const pngFiles = fs
         .readdirSync(path.join(familySymbolsPath, category))
         .filter(fileName => path.extname(fileName) === '.png')
+        .filter(
+          fileName => !(folderCoverFiles[category] || []).includes(fileName)
+        )
         .sort();
       const expectedTiles = pngFiles.map(fileName => {
         const symbolId = path.basename(fileName, '.png');

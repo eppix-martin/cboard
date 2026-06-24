@@ -20,7 +20,7 @@
       },
       {
         "label": "COLE",
-        "image": "/symbols/family/cole/sara.png",
+        "image": "/symbols/family/cole/portada.png",
         "loadBoard": "family-cole",
         "id": "family-root-cole",
         "type": "folder",
@@ -267,6 +267,41 @@
         "label": "GENA",
         "image": "/symbols/family/cole/gena.png",
         "id": "family-cole-gena",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "SAMU",
+        "image": "/symbols/family/cole/samu.png",
+        "id": "family-cole-samu",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "MILE",
+        "image": "/symbols/family/cole/mile.png",
+        "id": "family-cole-mile",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "TIMOTEO",
+        "image": "/symbols/family/cole/timoteo.png",
+        "id": "family-cole-timoteo",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "FELI",
+        "image": "/symbols/family/cole/feli.png",
+        "id": "family-cole-feli",
+        "type": "button",
+        "borderColor": "red"
+      },
+      {
+        "label": "LUCAS",
+        "image": "/symbols/family/cole/lucas.png",
+        "id": "family-cole-lucas",
         "type": "button",
         "borderColor": "red"
       }

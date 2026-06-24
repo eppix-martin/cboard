@@ -409,7 +409,7 @@ describe('boardMigrations', () => {
     });
   });
 
-  describe('migration 5 – refreshed family board defaults', () => {
+  describe('migration 6 – refreshed family board defaults', () => {
     it('refreshes already-migrated persisted family boards to the current defaults', () => {
       const staleColeBoard = {
         ...DEFAULT_BOARDS.family.find(board => board.id === 'family-cole'),
@@ -435,7 +435,7 @@ describe('boardMigrations', () => {
         }
       };
 
-      const result = boardMigrations[5](state);
+      const result = boardMigrations[6](state);
       const refreshedColeBoard = result.board.boards.find(
         board => board.id === 'family-cole'
       );
