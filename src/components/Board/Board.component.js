@@ -53,24 +53,48 @@ const FAMILY_BOARD_GRID_ROWS = {
   xxs: 3
 };
 
+const FAMILY_BOARD_SELECTING_GRID_ROWS = {
+  lg: 1,
+  md: 1,
+  sm: 1,
+  xs: 1,
+  xxs: 2
+};
+
 export function isFamilyBoard(board) {
   return Boolean(board && board.id && board.id.indexOf('family-') === 0);
 }
 
 export function getBoardGridCols(board, displaySettings) {
-  if (isFamilyBoard(board) && !board.isFixed) {
+  if (isFamilyBoard(board)) {
     return FAMILY_BOARD_GRID_COLS;
   }
 
   return DISPLAY_SIZE_GRID_COLS[displaySettings.uiSize];
 }
 
-export function getBoardGridRows(board) {
-  if (isFamilyBoard(board) && !board.isFixed) {
+export function getBoardGridRows(board, isSelecting = false) {
+  if (isFamilyBoard(board)) {
+    if (isSelecting) {
+      return FAMILY_BOARD_SELECTING_GRID_ROWS;
+    }
+
     return FAMILY_BOARD_GRID_ROWS;
   }
 
   return undefined;
+}
+
+export function canEditGridLayout(board, isSelecting, isSaving) {
+  if (isFamilyBoard(board)) {
+    return false;
+  }
+
+  return isSelecting && !isSaving;
+}
+
+export function shouldUseFixedGrid(board) {
+  return Boolean(board && board.isFixed && !isFamilyBoard(board));
 }
 
 export class Board extends Component {
@@ -178,7 +202,7 @@ export class Board extends Component {
     const { onTileClick, isSelecting } = this.props;
 
     if (tile.loadBoard && !isSelecting) {
-      const boardComponentRef = this.props.board.isFixed
+      const boardComponentRef = shouldUseFixedGrid(this.props.board)
         ? 'fixedBoardContainerRef'
         : 'boardContainerRef';
       this[boardComponentRef].current.scrollTop = 0;
@@ -373,7 +397,7 @@ export class Board extends Component {
 
     const tiles = this.renderTiles(board.tiles);
     const cols = getBoardGridCols(board, this.props.displaySettings);
-    const rows = getBoardGridRows(board);
+    const rows = getBoardGridRows(board, isSelecting);
     const isLoggedIn = !!userData.email;
     const isNavigationButtonsOnTheSide =
       navigationSettings.navigationButtonsStyle === undefined ||
@@ -390,7 +414,8 @@ export class Board extends Component {
         <div
           className={classNames('Board', {
             'is-locked': this.props.isLocked,
-            'Board--family': isFamilyBoard(board)
+            'Board--family': isFamilyBoard(board),
+            'Board--selecting': isSelecting
           })}
         >
           <BoardTour
@@ -507,12 +532,12 @@ export class Board extends Component {
                 onKeyUp={this.handleBoardKeyUp}
                 ref={this.boardContainerRef}
               >
-                {!board.isFixed &&
+                {!shouldUseFixedGrid(board) &&
                   (tiles.length ? (
                     <Grid
                       key={board.id}
                       board={board}
-                      edit={isSelecting && !isSaving}
+                      edit={canEditGridLayout(board, isSelecting, isSaving)}
                       cols={cols}
                       rows={rows}
                       onLayoutChange={onLayoutChange}
@@ -527,7 +552,7 @@ export class Board extends Component {
                     <EmptyBoard />
                   ))}
 
-                {board.isFixed && (
+                {shouldUseFixedGrid(board) && (
                   <FixedGrid
                     key={board.id}
                     order={board.grid ? board.grid.order : []}
@@ -575,7 +600,7 @@ export class Board extends Component {
                 isScroll={isScroll}
                 isSaving={isSaving}
                 boardContainer={
-                  board.isFixed
+                  shouldUseFixedGrid(board)
                     ? this.fixedBoardContainerRef
                     : this.boardContainerRef
                 }

@@ -2,10 +2,13 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import Board, {
+  canEditGridLayout,
   getBoardGridCols,
   getBoardGridRows,
-  isFamilyBoard
+  isFamilyBoard,
+  shouldUseFixedGrid
 } from '../Board.component';
+import '../Board.css';
 jest.mock('../Board.messages', () => ({
   editTitle: {
     id: 'cboard.components.Board.editTitle',
@@ -81,6 +84,22 @@ describe('family board layout', () => {
     });
   });
 
+  it('uses family columns even when persisted family boards are fixed', () => {
+    const displaySettings = { uiSize: 'Standard' };
+    const cols = getBoardGridCols(
+      { id: 'family-personas', isFixed: true },
+      displaySettings
+    );
+
+    expect(cols).toEqual({
+      lg: 4,
+      md: 4,
+      sm: 4,
+      xs: 4,
+      xxs: 2
+    });
+  });
+
   it('keeps the default grid columns for non-family boards', () => {
     const displaySettings = { uiSize: 'Standard' };
     const cols = getBoardGridCols({ id: 'root' }, displaySettings);
@@ -104,7 +123,47 @@ describe('family board layout', () => {
     });
   });
 
+  it('uses family rows even when persisted family boards are fixed', () => {
+    expect(getBoardGridRows({ id: 'family-personas', isFixed: true })).toEqual({
+      lg: 2,
+      md: 2,
+      sm: 2,
+      xs: 2,
+      xxs: 3
+    });
+  });
+
+  it('uses taller rows for family boards in selection mode', () => {
+    expect(getBoardGridRows({ id: 'family-personas' }, true)).toEqual({
+      lg: 1,
+      md: 1,
+      sm: 1,
+      xs: 1,
+      xxs: 2
+    });
+  });
+
   it('keeps default grid rows for non-family boards', () => {
     expect(getBoardGridRows({ id: 'root' })).toBeUndefined();
+  });
+
+  it('keeps family boards visually stable in selection mode', () => {
+    expect(canEditGridLayout({ id: 'family-personas' }, true, false)).toBe(
+      false
+    );
+  });
+
+  it('allows non-family boards to edit the grid layout in selection mode', () => {
+    expect(canEditGridLayout({ id: 'root' }, true, false)).toBe(true);
+  });
+
+  it('keeps persisted fixed family boards on the responsive family layout', () => {
+    expect(shouldUseFixedGrid({ id: 'family-personas', isFixed: true })).toBe(
+      false
+    );
+  });
+
+  it('keeps fixed grid rendering for non-family fixed boards', () => {
+    expect(shouldUseFixedGrid({ id: 'root', isFixed: true })).toBe(true);
   });
 });

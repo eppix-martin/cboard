@@ -289,4 +289,256 @@ describe('boardMigrations', () => {
       expect(result.board.familyBoardsVersion).toBe(FAMILY_BOARDS_VERSION);
     });
   });
+
+  describe('migration 4 – family board as home', () => {
+    const createState = overrides => ({
+      board: {
+        boards: [],
+        syncMeta: {},
+        output: [{ id: 'spoken-tile' }],
+        images: [{ id: 'image-1' }],
+        activeBoardId: 'root',
+        navHistory: ['root'],
+        ...overrides.board
+      },
+      app: { ready: true },
+      communicator: {
+        activeCommunicatorId: 'cboard_default',
+        communicators: [
+          {
+            id: 'cboard_default',
+            rootBoard: 'root',
+            boards: ['root']
+          },
+          {
+            id: 'custom-communicator',
+            rootBoard: 'user-board',
+            boards: ['user-board']
+          }
+        ],
+        ...overrides.communicator
+      },
+      speech: { voiceURI: 'voice-1' },
+      ...overrides.root
+    });
+
+    it('moves old persisted installs from root to the family board while preserving other state', () => {
+      const nonFamilyBoard = { id: 'root', email: 'support@cboard.io' };
+      const userBoard = { id: 'user-board', email: 'user@example.com' };
+      const state = createState({
+        board: {
+          boards: [DEFAULT_BOARDS.family[0], nonFamilyBoard, userBoard]
+        }
+      });
+
+      const result = boardMigrations[4](state);
+      const defaultCommunicator = result.communicator.communicators.find(
+        communicator => communicator.id === 'cboard_default'
+      );
+      const customCommunicator = result.communicator.communicators.find(
+        communicator => communicator.id === 'custom-communicator'
+      );
+
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+      expect(defaultCommunicator.rootBoard).toBe('family-root');
+      expect(defaultCommunicator.boards).toEqual(['root', 'family-root']);
+      expect(defaultCommunicator.boards).toHaveLength(
+        new Set(defaultCommunicator.boards).size
+      );
+      expect(result.board.boards).toEqual(
+        expect.arrayContaining([nonFamilyBoard, userBoard])
+      );
+      expect(result.board.output).toEqual([{ id: 'spoken-tile' }]);
+      expect(result.board.images).toEqual([{ id: 'image-1' }]);
+      expect(result.app).toBe(state.app);
+      expect(result.speech).toBe(state.speech);
+      expect(customCommunicator).toEqual(
+        state.communicator.communicators.find(
+          communicator => communicator.id === 'custom-communicator'
+        )
+      );
+    });
+
+    it('does not duplicate family-root in the default communicator boards list', () => {
+      const state = createState({
+        communicator: {
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'root',
+              boards: ['root', 'family-root']
+            }
+          ]
+        }
+      });
+
+      const result = boardMigrations[4](state);
+      const defaultCommunicator = result.communicator.communicators[0];
+
+      expect(defaultCommunicator.boards).toEqual(['root', 'family-root']);
+    });
+
+    it('activates the default communicator with the family home board', () => {
+      const state = createState({
+        communicator: { activeCommunicatorId: 'custom-communicator' }
+      });
+
+      const result = boardMigrations[4](state);
+
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.communicator.activeCommunicatorId).toBe('cboard_default');
+    });
+
+    it('handles persisted state without a communicator slice', () => {
+      const state = createState({
+        root: { communicator: undefined }
+      });
+
+      const result = boardMigrations[4](state);
+
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+      expect(result.communicator).toBeUndefined();
+    });
+
+    it('handles persisted state without a board slice', () => {
+      const state = createState({
+        root: { board: undefined }
+      });
+
+      const result = boardMigrations[4](state);
+      const defaultCommunicator = result.communicator.communicators.find(
+        communicator => communicator.id === 'cboard_default'
+      );
+
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+      expect(result.board.boards).toEqual(DEFAULT_BOARDS.family);
+      expect(defaultCommunicator.rootBoard).toBe('family-root');
+      expect(defaultCommunicator.boards).toEqual(['root', 'family-root']);
+    });
+  });
+
+  describe('migration 6 – refreshed family board defaults', () => {
+    it('refreshes already-migrated persisted family boards to the current defaults', () => {
+      const staleColeBoard = {
+        ...DEFAULT_BOARDS.family.find(board => board.id === 'family-cole'),
+        tiles: [{ id: 'family-cole-old', label: 'OLD' }]
+      };
+      const userBoard = { id: 'user-board', email: 'user@example.com' };
+      const state = {
+        board: {
+          boards: [staleColeBoard, userBoard],
+          syncMeta: {},
+          activeBoardId: 'family-root',
+          navHistory: ['family-root'],
+          familyBoardsVersion: FAMILY_BOARDS_VERSION - 1
+        },
+        communicator: {
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'family-root',
+              boards: ['root', 'family-root']
+            }
+          ]
+        }
+      };
+
+      const result = boardMigrations[6](state);
+      const refreshedColeBoard = result.board.boards.find(
+        board => board.id === 'family-cole'
+      );
+
+      expect(refreshedColeBoard).toEqual(
+        DEFAULT_BOARDS.family.find(board => board.id === 'family-cole')
+      );
+      expect(result.board.boards).toContainEqual(userBoard);
+      expect(result.board.familyBoardsVersion).toBe(FAMILY_BOARDS_VERSION);
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+    });
+  });
+
+  describe('migration 7 – deployed family home repair', () => {
+    it('repairs an inbound version 6 state with a custom active communicator', () => {
+      const state = {
+        _persist: { version: 6, rehydrated: true },
+        board: {
+          boards: [
+            { id: 'root', email: 'support@cboard.io' },
+            { id: 'user-board', email: 'user@example.com' }
+          ],
+          syncMeta: {},
+          activeBoardId: 'root',
+          navHistory: ['root']
+        },
+        communicator: {
+          activeCommunicatorId: 'custom-communicator',
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'root',
+              boards: ['root']
+            },
+            {
+              id: 'custom-communicator',
+              rootBoard: 'user-board',
+              boards: ['user-board']
+            }
+          ]
+        }
+      };
+
+      const result = boardMigrations[7](state);
+      const defaultCommunicator = result.communicator.communicators.find(
+        communicator => communicator.id === 'cboard_default'
+      );
+
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+      expect(result.communicator.activeCommunicatorId).toBe('cboard_default');
+      expect(defaultCommunicator.rootBoard).toBe('family-root');
+      expect(defaultCommunicator.boards).toEqual(['root', 'family-root']);
+      expect(result._persist).toEqual({ version: 6, rehydrated: true });
+    });
+
+    it('restores the default communicator when it was deleted from a version 6 state', () => {
+      const state = {
+        _persist: { version: 6, rehydrated: true },
+        board: {
+          boards: [{ id: 'user-board', email: 'user@example.com' }],
+          syncMeta: {},
+          activeBoardId: 'user-board',
+          navHistory: ['user-board']
+        },
+        communicator: {
+          activeCommunicatorId: 'custom-communicator',
+          communicators: [
+            {
+              id: 'custom-communicator',
+              rootBoard: 'user-board',
+              boards: ['user-board']
+            }
+          ]
+        }
+      };
+
+      const result = boardMigrations[7](state);
+      const activeCommunicator = result.communicator.communicators.find(
+        communicator =>
+          communicator.id === result.communicator.activeCommunicatorId
+      );
+
+      expect(result.communicator.activeCommunicatorId).toBe('cboard_default');
+      expect(activeCommunicator).toMatchObject({
+        id: 'cboard_default',
+        rootBoard: 'family-root',
+        boards: ['family-root']
+      });
+      expect(result.board.activeBoardId).toBe('family-root');
+      expect(result.board.navHistory).toEqual(['family-root']);
+    });
+  });
 });

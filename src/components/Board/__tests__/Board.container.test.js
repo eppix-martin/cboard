@@ -46,6 +46,28 @@ const createState = (boards, syncMeta = {}) => ({
 
 describe('Board.container', () => {
   describe('temporary output board', () => {
+    it('uses a family board id for temporary output from family boards', () => {
+      const instance = new BoardContainer({
+        board: { id: 'family-cole' },
+        output: [{ id: 'tile-1', type: 'button' }]
+      });
+
+      expect(instance.getTemporaryOutputBoard().id).toBe(
+        'family-temporary-output-board'
+      );
+    });
+
+    it('keeps the default board id for temporary output from non-family boards', () => {
+      const instance = new BoardContainer({
+        board: { id: 'board-1' },
+        output: [{ id: 'tile-1', type: 'button' }]
+      });
+
+      expect(instance.getTemporaryOutputBoard().id).toBe(
+        'temporary-output-board'
+      );
+    });
+
     it('closes when the output no longer has non-live symbols', () => {
       const board = { id: 'board-1', isFixed: false, tiles: [] };
       const instance = new BoardContainer({

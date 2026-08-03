@@ -81,6 +81,9 @@ import { resolveTileLabel } from '../../helpers';
 const ogv = require('ogv');
 ogv.OGVLoader.base = process.env.PUBLIC_URL + '/ogv';
 
+const TEMPORARY_OUTPUT_BOARD_ID = 'temporary-output-board';
+const FAMILY_TEMPORARY_OUTPUT_BOARD_ID = 'family-temporary-output-board';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -1673,7 +1676,12 @@ export class BoardContainer extends Component {
   };
 
   getTemporaryOutputBoard = () => ({
-    id: 'temporary-output-board',
+    id:
+      this.props.board &&
+      this.props.board.id &&
+      this.props.board.id.indexOf('family-') === 0
+        ? FAMILY_TEMPORARY_OUTPUT_BOARD_ID
+        : TEMPORARY_OUTPUT_BOARD_ID,
     name: 'Selección',
     hidden: false,
     isPublic: false,

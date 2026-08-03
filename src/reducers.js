@@ -16,6 +16,7 @@ import boardReducer from './components/Board/Board.reducer';
 import communicatorReducer from './components/Communicator/Communicator.reducer';
 import notificationsReducer from './components/Notifications/Notifications.reducer';
 import subscriptionProviderReducer from './providers/SubscriptionProvider/SubscriptionProvider.reducer';
+import defaultCommunicators from './api/communicators.json';
 import {
   DEFAULT_BOARDS,
   FAMILY_BOARDS_OWNER_EMAIL,
@@ -117,6 +118,7 @@ export const createMigratingStorage = (oldStorage, newStorage) => ({
 const migratingStorage = createMigratingStorage(localStorage, localForage);
 
 const FAMILY_ROOT_BOARD_ID = 'family-root';
+const DEFAULT_COMMUNICATOR_ID = 'cboard_default';
 
 function isCodeOwnedFamilyBoard(board) {
   return (
@@ -181,6 +183,56 @@ function migrateCodeOwnedFamilyBoards(state) {
   };
 }
 
+function migrateFamilyBoardAsHome(state) {
+  const migratedState = migrateCodeOwnedFamilyBoards(state);
+  const communicatorState = migratedState.communicator;
+  const communicators = Array.isArray(communicatorState?.communicators)
+    ? communicatorState.communicators
+    : [];
+  const hasDefaultCommunicator = communicators.some(
+    communicator => communicator.id === DEFAULT_COMMUNICATOR_ID
+  );
+  const migratedCommunicator = communicatorState
+    ? {
+        ...communicatorState,
+        communicators: communicators
+          .map(communicator => {
+            if (communicator.id !== DEFAULT_COMMUNICATOR_ID) {
+              return communicator;
+            }
+
+            const boards = Array.isArray(communicator.boards)
+              ? communicator.boards
+              : [];
+
+            return {
+              ...communicator,
+              rootBoard: FAMILY_ROOT_BOARD_ID,
+              boards: boards.includes(FAMILY_ROOT_BOARD_ID)
+                ? boards
+                : [...boards, FAMILY_ROOT_BOARD_ID]
+            };
+          })
+          .concat(hasDefaultCommunicator ? [] : deepCopy(defaultCommunicators))
+      }
+    : communicatorState;
+
+  return {
+    ...migratedState,
+    board: {
+      ...migratedState.board,
+      activeBoardId: FAMILY_ROOT_BOARD_ID,
+      navHistory: [FAMILY_ROOT_BOARD_ID]
+    },
+    communicator: migratedCommunicator
+      ? {
+          ...migratedCommunicator,
+          activeCommunicatorId: DEFAULT_COMMUNICATOR_ID
+        }
+      : migratedCommunicator
+  };
+}
+
 export const boardMigrations = {
   0: state => {
     return {
@@ -198,14 +250,19 @@ export const boardMigrations = {
       syncMeta: state.board?.syncMeta ?? {}
     }
   }),
-  2: migrateCodeOwnedFamilyBoards
+  2: migrateCodeOwnedFamilyBoards,
+  3: migrateCodeOwnedFamilyBoards,
+  4: migrateFamilyBoardAsHome,
+  5: migrateFamilyBoardAsHome,
+  6: migrateFamilyBoardAsHome,
+  7: migrateFamilyBoardAsHome
 };
 
 const config = {
   key: 'root',
   storage: migratingStorage,
   blacklist: ['language'],
-  version: 2,
+  version: 7,
   migrate: createMigrate(boardMigrations, { debug: false })
 };
 

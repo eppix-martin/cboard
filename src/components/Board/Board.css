@@ -85,6 +85,11 @@
   margin-top: 0;
 }
 
+.Board--family.Board--selecting .Board__output,
+.Board--family.Board--selecting .Board__communicator-toolbar {
+  display: none;
+}
+
 .BoardSideButtonsContainer {
   display: flex;
   height: 100%;

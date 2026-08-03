@@ -53,3 +53,6 @@ yarn-error.log*
 /tests/playwright-report/
 /tests/blob-report/
 /tests/playwright/.cache/
+
+# Local AI runtime state
+.atl/

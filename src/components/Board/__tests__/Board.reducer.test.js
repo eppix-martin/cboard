@@ -130,6 +130,15 @@ describe('reducer', () => {
         borderColor: 'red'
       },
       {
+        id: 'family-root-cole',
+        loadBoard: 'family-cole',
+        label: 'COLE',
+        image: '/symbols/family/cole/portada.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'red'
+      },
+      {
         id: 'family-root-acciones',
         loadBoard: 'family-acciones',
         label: 'ACCIONES',
@@ -199,6 +208,7 @@ describe('reducer', () => {
     );
     const categoryBorderColors = {
       acciones: 'green',
+      cole: 'red',
       colores: 'blue',
       conversacion: undefined,
       cosas: 'blue',
@@ -208,6 +218,7 @@ describe('reducer', () => {
     };
     const categories = [
       'acciones',
+      'cole',
       'colores',
       'conversacion',
       'cosas',
@@ -215,6 +226,20 @@ describe('reducer', () => {
       'lugares',
       'personas'
     ];
+    const folderCoverFiles = {
+      cole: ['portada.png']
+    };
+    const sharedTiles = {
+      cole: [
+        {
+          id: 'family-cole-valen',
+          label: 'VALEN',
+          image: '/symbols/family/personas/valen.png',
+          type: 'button',
+          borderColor: 'red'
+        }
+      ]
+    };
     const labelOverrides = {
       'colores/marron': 'MARRÓN',
       'dibus/blippi': 'ISA',
@@ -232,6 +257,9 @@ describe('reducer', () => {
       const pngFiles = fs
         .readdirSync(path.join(familySymbolsPath, category))
         .filter(fileName => path.extname(fileName) === '.png')
+        .filter(
+          fileName => !(folderCoverFiles[category] || []).includes(fileName)
+        )
         .sort();
       const expectedTiles = pngFiles.map(fileName => {
         const symbolId = path.basename(fileName, '.png');
@@ -250,6 +278,8 @@ describe('reducer', () => {
 
         return expectedTile;
       });
+      expectedTiles.push(...(sharedTiles[category] || []));
+
       const actualTiles = familyBoardsById[`family-${category}`].tiles
         .map(tile => ({
           id: tile.id,
@@ -264,6 +294,29 @@ describe('reducer', () => {
 
       expect(actualTiles).toEqual(expectedTiles);
     });
+  });
+  it('should include the new cosas pictograms without duplicating cepillo', () => {
+    const cosasBoard = DEFAULT_BOARDS.family.find(
+      board => board.id === 'family-cosas'
+    );
+
+    expect(
+      cosasBoard.tiles.filter(tile => tile.id === 'family-cosas-cepillo')
+    ).toHaveLength(1);
+    expect(cosasBoard.tiles).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'family-cosas-masajeador',
+          label: 'MASAJEADOR',
+          image: '/symbols/family/cosas/masajeador.png'
+        }),
+        expect.objectContaining({
+          id: 'family-cosas-bloques',
+          label: 'BLOQUES',
+          image: '/symbols/family/cosas/bloques.png'
+        })
+      ])
+    );
   });
   it('should handle logout', () => {
     const logout = {
