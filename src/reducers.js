@@ -16,6 +16,7 @@ import boardReducer from './components/Board/Board.reducer';
 import communicatorReducer from './components/Communicator/Communicator.reducer';
 import notificationsReducer from './components/Notifications/Notifications.reducer';
 import subscriptionProviderReducer from './providers/SubscriptionProvider/SubscriptionProvider.reducer';
+import defaultCommunicators from './api/communicators.json';
 import {
   DEFAULT_BOARDS,
   FAMILY_BOARDS_OWNER_EMAIL,
@@ -185,26 +186,34 @@ function migrateCodeOwnedFamilyBoards(state) {
 function migrateFamilyBoardAsHome(state) {
   const migratedState = migrateCodeOwnedFamilyBoards(state);
   const communicatorState = migratedState.communicator;
-  const migratedCommunicator = Array.isArray(communicatorState?.communicators)
+  const communicators = Array.isArray(communicatorState?.communicators)
+    ? communicatorState.communicators
+    : [];
+  const hasDefaultCommunicator = communicators.some(
+    communicator => communicator.id === DEFAULT_COMMUNICATOR_ID
+  );
+  const migratedCommunicator = communicatorState
     ? {
         ...communicatorState,
-        communicators: communicatorState.communicators.map(communicator => {
-          if (communicator.id !== DEFAULT_COMMUNICATOR_ID) {
-            return communicator;
-          }
+        communicators: communicators
+          .map(communicator => {
+            if (communicator.id !== DEFAULT_COMMUNICATOR_ID) {
+              return communicator;
+            }
 
-          const boards = Array.isArray(communicator.boards)
-            ? communicator.boards
-            : [];
+            const boards = Array.isArray(communicator.boards)
+              ? communicator.boards
+              : [];
 
-          return {
-            ...communicator,
-            rootBoard: FAMILY_ROOT_BOARD_ID,
-            boards: boards.includes(FAMILY_ROOT_BOARD_ID)
-              ? boards
-              : [...boards, FAMILY_ROOT_BOARD_ID]
-          };
-        })
+            return {
+              ...communicator,
+              rootBoard: FAMILY_ROOT_BOARD_ID,
+              boards: boards.includes(FAMILY_ROOT_BOARD_ID)
+                ? boards
+                : [...boards, FAMILY_ROOT_BOARD_ID]
+            };
+          })
+          .concat(hasDefaultCommunicator ? [] : deepCopy(defaultCommunicators))
       }
     : communicatorState;
 
@@ -216,6 +225,11 @@ function migrateFamilyBoardAsHome(state) {
       navHistory: [FAMILY_ROOT_BOARD_ID]
     },
     communicator: migratedCommunicator
+      ? {
+          ...migratedCommunicator,
+          activeCommunicatorId: DEFAULT_COMMUNICATOR_ID
+        }
+      : migratedCommunicator
   };
 }
 
@@ -240,14 +254,15 @@ export const boardMigrations = {
   3: migrateCodeOwnedFamilyBoards,
   4: migrateFamilyBoardAsHome,
   5: migrateFamilyBoardAsHome,
-  6: migrateFamilyBoardAsHome
+  6: migrateFamilyBoardAsHome,
+  7: migrateFamilyBoardAsHome
 };
 
 const config = {
   key: 'root',
   storage: migratingStorage,
   blacklist: ['language'],
-  version: 6,
+  version: 7,
   migrate: createMigrate(boardMigrations, { debug: false })
 };
 
