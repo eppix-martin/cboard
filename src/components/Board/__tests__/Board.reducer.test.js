@@ -295,6 +295,29 @@ describe('reducer', () => {
       expect(actualTiles).toEqual(expectedTiles);
     });
   });
+  it('should include the new cosas pictograms without duplicating cepillo', () => {
+    const cosasBoard = DEFAULT_BOARDS.family.find(
+      board => board.id === 'family-cosas'
+    );
+
+    expect(
+      cosasBoard.tiles.filter(tile => tile.id === 'family-cosas-cepillo')
+    ).toHaveLength(1);
+    expect(cosasBoard.tiles).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'family-cosas-masajeador',
+          label: 'MASAJEADOR',
+          image: '/symbols/family/cosas/masajeador.png'
+        }),
+        expect.objectContaining({
+          id: 'family-cosas-bloques',
+          label: 'BLOQUES',
+          image: '/symbols/family/cosas/bloques.png'
+        })
+      ])
+    );
+  });
   it('should handle logout', () => {
     const logout = {
       type: LOGOUT

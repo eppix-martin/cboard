@@ -587,6 +587,20 @@
         "borderColor": "blue"
       },
       {
+        "label": "MASAJEADOR",
+        "image": "/symbols/family/cosas/masajeador.png",
+        "id": "family-cosas-masajeador",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "BLOQUES",
+        "image": "/symbols/family/cosas/bloques.png",
+        "id": "family-cosas-bloques",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
         "label": "GALLETITAS",
         "image": "/symbols/family/cosas/galletitas.png",
         "id": "family-cosas-galletitas",
