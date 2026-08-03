@@ -1,6 +1,9 @@
 import { DEFAULT_FONT_FAMILY } from '../../../providers/ThemeProvider/ThemeProvider.constants';
 import { LOGIN_SUCCESS, LOGOUT } from '../../Account/Login/Login.constants';
-import { DISPLAY_SIZE_STANDARD } from '../../Settings/Display/Display.constants';
+import {
+  DISPLAY_SIZE_STANDARD,
+  LABEL_POSITION_ABOVE
+} from '../../Settings/Display/Display.constants';
 import { NAVIGATION_BUTTONS_STYLE_SIDES } from '../../Settings/Navigation/Navigation.constants';
 import {
   FINISH_FIRST_VISIT,
@@ -35,7 +38,7 @@ describe('reducer', () => {
         fontSize: DISPLAY_SIZE_STANDARD,
         hideOutputActive: false,
         increaseOutputButtons: false,
-        labelPosition: 'Below',
+        labelPosition: LABEL_POSITION_ABOVE,
         darkThemeActive: false
       },
       navigationSettings: {
@@ -64,7 +67,7 @@ describe('reducer', () => {
         uiSize: 'Standard',
         hideOutputActive: false,
         increaseOutputButtons: false,
-        labelPosition: 'Below',
+        labelPosition: LABEL_POSITION_ABOVE,
         fontFamily: DEFAULT_FONT_FAMILY,
         fontSize: 'Standard',
         darkThemeActive: false

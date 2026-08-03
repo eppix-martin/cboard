@@ -1,4 +1,4 @@
-import { mapStateToProps } from '../Board.container';
+import { BoardContainer, mapStateToProps } from '../Board.container';
 import { SYNC_STATUS } from '../Board.constants';
 
 jest.mock('ogv', () => ({ OGVLoader: { base: '' } }));
@@ -45,6 +45,30 @@ const createState = (boards, syncMeta = {}) => ({
 });
 
 describe('Board.container', () => {
+  describe('temporary output board', () => {
+    it('closes when the output no longer has non-live symbols', () => {
+      const board = { id: 'board-1', isFixed: false, tiles: [] };
+      const instance = new BoardContainer({
+        board,
+        output: [{ id: 'live-1', type: 'live' }]
+      });
+      instance.state = {
+        ...instance.state,
+        temporaryOutputBoardOpen: true
+      };
+      instance.setState = jest.fn();
+
+      instance.componentDidUpdate({
+        board,
+        output: [{ id: 'tile-1', type: 'button' }]
+      });
+
+      expect(instance.setState).toHaveBeenCalledWith({
+        temporaryOutputBoardOpen: false
+      });
+    });
+  });
+
   describe('mapStateToProps', () => {
     describe('active board handling', () => {
       it('returns undefined for active board that is soft-deleted', () => {

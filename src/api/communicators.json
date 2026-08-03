@@ -5,9 +5,10 @@
     "description": "Cboard's default communicator",
     "author": "Cboard Team",
     "email": "support@cboard.io",
-    "rootBoard": "root",
-    "boards": ["root"],
+    "rootBoard": "family-root",
+    "boards": ["family-root"],
     "defaultBoardsIncluded": [
+      { "nameOnJSON": "family", "homeBoard": "family-root" },
       { "nameOnJSON": "advanced", "homeBoard": "root" },
       { "nameOnJSON": "picSeePal", "homeBoard": "jjmlUcQs19" }
     ]

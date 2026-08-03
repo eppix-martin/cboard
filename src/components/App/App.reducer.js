@@ -13,7 +13,7 @@ import {
 import { LOGIN_SUCCESS, LOGOUT } from '../Account/Login/Login.constants';
 import {
   DISPLAY_SIZE_STANDARD,
-  LABEL_POSITION_BELOW
+  LABEL_POSITION_ABOVE
 } from '../Settings/Display/Display.constants';
 
 import { DEFAULT_FONT_FAMILY } from './../../providers/ThemeProvider/ThemeProvider.constants';
@@ -40,7 +40,7 @@ const initialState = {
     fontSize: DISPLAY_SIZE_STANDARD,
     hideOutputActive: false,
     increaseOutputButtons: false,
-    labelPosition: LABEL_POSITION_BELOW,
+    labelPosition: LABEL_POSITION_ABOVE,
     darkThemeActive: false
   },
   navigationSettings: {

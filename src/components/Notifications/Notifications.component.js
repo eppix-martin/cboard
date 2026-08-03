@@ -13,19 +13,17 @@ const propTypes = {
   handleNotificationDismissal: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
-  kind: PropTypes.string
+  kind: PropTypes.string,
+  onRefreshPage: PropTypes.func
 };
-
-function onRefreshPage() {
-  window.location.reload(true);
-}
 
 const Notifications = ({
   config,
   handleNotificationDismissal,
   message,
   open,
-  kind
+  kind,
+  onRefreshPage
 }) => {
   const childrenDependKind = kind => {
     if (!kind) return null;
@@ -37,7 +35,10 @@ const Notifications = ({
           onClose={handleNotificationDismissal}
           severity="info"
           action={
-            <Button variant="outlined" onClick={onRefreshPage}>
+            <Button
+              variant="outlined"
+              onClick={onRefreshPage || (() => window.location.reload())}
+            >
               <FormattedMessage {...messages.refreshPage} />
             </Button>
           }

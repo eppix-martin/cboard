@@ -37,6 +37,42 @@ import { NAVIGATION_BUTTONS_STYLE_SIDES } from '../Settings/Navigation/Navigatio
 import ImprovePhraseOutput from './ImprovePhraseOutput';
 import { resolveTileLabel, resolveBoardName } from '../../helpers';
 
+const FAMILY_BOARD_GRID_COLS = {
+  lg: 4,
+  md: 4,
+  sm: 4,
+  xs: 4,
+  xxs: 2
+};
+
+const FAMILY_BOARD_GRID_ROWS = {
+  lg: 2,
+  md: 2,
+  sm: 2,
+  xs: 2,
+  xxs: 3
+};
+
+export function isFamilyBoard(board) {
+  return Boolean(board && board.id && board.id.indexOf('family-') === 0);
+}
+
+export function getBoardGridCols(board, displaySettings) {
+  if (isFamilyBoard(board) && !board.isFixed) {
+    return FAMILY_BOARD_GRID_COLS;
+  }
+
+  return DISPLAY_SIZE_GRID_COLS[displaySettings.uiSize];
+}
+
+export function getBoardGridRows(board) {
+  if (isFamilyBoard(board) && !board.isFixed) {
+    return FAMILY_BOARD_GRID_ROWS;
+  }
+
+  return undefined;
+}
+
 export class Board extends Component {
   static propTypes = {
     board: PropTypes.shape({
@@ -79,6 +115,7 @@ export class Board extends Component {
      * Callback fired when requesting to travel and load root board
      */
     onRequestToRootBoard: PropTypes.func,
+    onOpenTemporaryOutputBoard: PropTypes.func,
     /**
      *
      */
@@ -330,11 +367,13 @@ export class Board extends Component {
       totalRows,
       changeDefaultBoard,
       improvedPhrase,
-      speak
+      speak,
+      onOpenTemporaryOutputBoard
     } = this.props;
 
     const tiles = this.renderTiles(board.tiles);
-    const cols = DISPLAY_SIZE_GRID_COLS[this.props.displaySettings.uiSize];
+    const cols = getBoardGridCols(board, this.props.displaySettings);
+    const rows = getBoardGridRows(board);
     const isLoggedIn = !!userData.email;
     const isNavigationButtonsOnTheSide =
       navigationSettings.navigationButtonsStyle === undefined ||
@@ -350,7 +389,8 @@ export class Board extends Component {
       >
         <div
           className={classNames('Board', {
-            'is-locked': this.props.isLocked
+            'is-locked': this.props.isLocked,
+            'Board--family': isFamilyBoard(board)
           })}
         >
           <BoardTour
@@ -367,7 +407,10 @@ export class Board extends Component {
                 hidden: this.props.displaySettings.hideOutputActive
               })}
             >
-              <OutputContainer />
+              <OutputContainer
+                onTemporaryBoardClick={onOpenTemporaryOutputBoard}
+                hideTemporaryBoardButton={isSelecting}
+              />
             </div>
           </Scannable>
 
@@ -467,9 +510,11 @@ export class Board extends Component {
                 {!board.isFixed &&
                   (tiles.length ? (
                     <Grid
+                      key={board.id}
                       board={board}
                       edit={isSelecting && !isSaving}
                       cols={cols}
+                      rows={rows}
                       onLayoutChange={onLayoutChange}
                       setIsScroll={setIsScroll}
                       isBigScrollBtns={
@@ -484,6 +529,7 @@ export class Board extends Component {
 
                 {board.isFixed && (
                   <FixedGrid
+                    key={board.id}
                     order={board.grid ? board.grid.order : []}
                     items={board.tiles}
                     columns={

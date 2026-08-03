@@ -87,12 +87,17 @@ it('on tile folder select', () => {
 it('on tile click and props', () => {
   const props = {
     id: '42',
-    variant: 'button',
-    borderColor: '#fffff',
-    backgroundColor: '#fffff',
+    borderColor: '#ffffff',
+    backgroundColor: '#ffffff',
     variant: 'folder',
     onClick: jest.fn(),
     onSelect: jest.fn()
   };
   const wrapper = shallow(<Tile {...props} />);
+  expect(wrapper.find('button').prop('style')).toEqual({
+    '--tile-border-color': '#ffffff'
+  });
+  expect(wrapper.find('.TileShape').prop('style')).toEqual({
+    backgroundColor: '#ffffff'
+  });
 });

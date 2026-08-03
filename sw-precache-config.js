@@ -25,6 +25,8 @@ function mapImagesToGlobs(boards, globPrefix) {
 const boardImages = mapImagesToGlobs(boards.advanced, 'build/');
 
 module.exports = {
+  clientsClaim: true,
+  importScripts: ['service-worker-skip-waiting.js'],
   stripPrefix: 'build/',
   staticFileGlobs: [
     'build/*.html',
@@ -58,6 +60,15 @@ module.exports = {
       options: {
         cache: {
           name: 'symbols-cboard'
+        }
+      }
+    },
+    {
+      urlPattern: /\/symbols\/family/,
+      handler: 'cacheFirst',
+      options: {
+        cache: {
+          name: 'symbols-family'
         }
       }
     }
