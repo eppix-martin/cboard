@@ -46,6 +46,15 @@
         "borderColor": "blue"
       },
       {
+        "label": "TERAPIAS",
+        "image": "/symbols/family/terapias/bloques.png",
+        "loadBoard": "family-terapias",
+        "id": "family-root-terapias",
+        "type": "folder",
+        "linkedBoard": true,
+        "borderColor": "blue"
+      },
+      {
         "label": "COLORES",
         "image": "/symbols/family/colores/azul.png",
         "loadBoard": "family-colores",
@@ -587,20 +596,6 @@
         "borderColor": "blue"
       },
       {
-        "label": "MASAJEADOR",
-        "image": "/symbols/family/cosas/masajeador.png",
-        "id": "family-cosas-masajeador",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
-        "label": "BLOQUES",
-        "image": "/symbols/family/cosas/bloques.png",
-        "id": "family-cosas-bloques",
-        "type": "button",
-        "borderColor": "blue"
-      },
-      {
         "label": "GALLETITAS",
         "image": "/symbols/family/cosas/galletitas.png",
         "id": "family-cosas-galletitas",
@@ -639,6 +634,59 @@
         "label": "CARRITO",
         "image": "/symbols/family/cosas/carrito.png",
         "id": "family-cosas-carrito",
+        "type": "button",
+        "borderColor": "blue"
+      }
+    ]
+  },
+  {
+    "id": "family-terapias",
+    "name": "Family TERAPIAS",
+    "author": "Family",
+    "description": "Local family terapias board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "AMARILLO",
+        "image": "/symbols/family/terapias/masajeador.png",
+        "id": "family-terapias-masajeador",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "BLOQUES",
+        "image": "/symbols/family/terapias/bloques.png",
+        "id": "family-terapias-bloques",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "CEPILLO",
+        "image": "/symbols/family/terapias/cepillo.png",
+        "id": "family-terapias-cepillo",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "PLATOS",
+        "image": "/symbols/family/terapias/platos.png",
+        "id": "family-terapias-platos",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "COMIDA",
+        "image": "/symbols/family/terapias/comida.png",
+        "id": "family-terapias-comida",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "COCINA",
+        "image": "/symbols/family/terapias/cocina.png",
+        "id": "family-terapias-cocina",
         "type": "button",
         "borderColor": "blue"
       }

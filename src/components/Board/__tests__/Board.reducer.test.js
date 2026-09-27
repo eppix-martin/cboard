@@ -157,6 +157,15 @@ describe('reducer', () => {
         borderColor: 'blue'
       },
       {
+        id: 'family-root-terapias',
+        loadBoard: 'family-terapias',
+        label: 'TERAPIAS',
+        image: '/symbols/family/terapias/bloques.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'blue'
+      },
+      {
         id: 'family-root-colores',
         loadBoard: 'family-colores',
         label: 'COLORES',
@@ -214,7 +223,8 @@ describe('reducer', () => {
       cosas: 'blue',
       dibus: 'blue',
       lugares: 'black',
-      personas: 'red'
+      personas: 'red',
+      terapias: 'blue'
     };
     const categories = [
       'acciones',
@@ -224,7 +234,8 @@ describe('reducer', () => {
       'cosas',
       'dibus',
       'lugares',
-      'personas'
+      'personas',
+      'terapias'
     ];
     const folderCoverFiles = {
       cole: ['portada.png']
@@ -250,7 +261,8 @@ describe('reducer', () => {
       'cosas/tunel': 'TÚNEL',
       'lugares/jardin': 'JARDÍN',
       'personas/mama': 'MAMÁ',
-      'personas/papa': 'PAPÁ'
+      'personas/papa': 'PAPÁ',
+      'terapias/masajeador': 'AMARILLO'
     };
 
     categories.forEach(category => {
@@ -295,25 +307,54 @@ describe('reducer', () => {
       expect(actualTiles).toEqual(expectedTiles);
     });
   });
-  it('should include the new cosas pictograms without duplicating cepillo', () => {
+  it('should keep the existing cosas cepillo while moving therapy pictograms', () => {
     const cosasBoard = DEFAULT_BOARDS.family.find(
       board => board.id === 'family-cosas'
+    );
+    const terapiasBoard = DEFAULT_BOARDS.family.find(
+      board => board.id === 'family-terapias'
     );
 
     expect(
       cosasBoard.tiles.filter(tile => tile.id === 'family-cosas-cepillo')
     ).toHaveLength(1);
-    expect(cosasBoard.tiles).toEqual(
+    expect(cosasBoard.tiles.map(tile => tile.id)).not.toContain(
+      'family-cosas-masajeador'
+    );
+    expect(cosasBoard.tiles.map(tile => tile.id)).not.toContain(
+      'family-cosas-bloques'
+    );
+    expect(terapiasBoard.tiles).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          id: 'family-cosas-masajeador',
-          label: 'MASAJEADOR',
-          image: '/symbols/family/cosas/masajeador.png'
+          id: 'family-terapias-masajeador',
+          label: 'AMARILLO',
+          image: '/symbols/family/terapias/masajeador.png'
         }),
         expect.objectContaining({
-          id: 'family-cosas-bloques',
+          id: 'family-terapias-bloques',
           label: 'BLOQUES',
-          image: '/symbols/family/cosas/bloques.png'
+          image: '/symbols/family/terapias/bloques.png'
+        }),
+        expect.objectContaining({
+          id: 'family-terapias-cepillo',
+          label: 'CEPILLO',
+          image: '/symbols/family/terapias/cepillo.png'
+        }),
+        expect.objectContaining({
+          id: 'family-terapias-platos',
+          label: 'PLATOS',
+          image: '/symbols/family/terapias/platos.png'
+        }),
+        expect.objectContaining({
+          id: 'family-terapias-comida',
+          label: 'COMIDA',
+          image: '/symbols/family/terapias/comida.png'
+        }),
+        expect.objectContaining({
+          id: 'family-terapias-cocina',
+          label: 'COCINA',
+          image: '/symbols/family/terapias/cocina.png'
         })
       ])
     );
