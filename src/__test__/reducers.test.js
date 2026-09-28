@@ -541,4 +541,56 @@ describe('boardMigrations', () => {
       expect(result.board.navHistory).toEqual(['family-root']);
     });
   });
+
+  describe('migration 8 – refresh family boards with terapias', () => {
+    it('refreshes a version 7 family board while preserving user-owned boards', () => {
+      const staleFamilyBoard = {
+        ...DEFAULT_BOARDS.family.find(board => board.id === 'family-cosas'),
+        tiles: [{ id: 'family-cosas-old', label: 'OLD' }]
+      };
+      const userBoard = { id: 'user-board', email: 'user@example.com' };
+      const importedFamilyBoard = {
+        id: 'family-imported',
+        email: 'user@example.com',
+        tiles: [{ id: 'family-imported-tile', label: 'Imported' }]
+      };
+      const state = {
+        _persist: { version: 7, rehydrated: true },
+        board: {
+          boards: [staleFamilyBoard, userBoard, importedFamilyBoard],
+          syncMeta: {},
+          activeBoardId: 'user-board',
+          navHistory: ['user-board'],
+          familyBoardsVersion: FAMILY_BOARDS_VERSION - 1
+        },
+        communicator: {
+          activeCommunicatorId: 'cboard_default',
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'family-root',
+              boards: ['root', 'family-root']
+            }
+          ]
+        }
+      };
+
+      const result = boardMigrations[8](state);
+      const refreshedTerapiasBoard = result.board.boards.find(
+        board => board.id === 'family-terapias'
+      );
+
+      expect(refreshedTerapiasBoard).toEqual(
+        DEFAULT_BOARDS.family.find(board => board.id === 'family-terapias')
+      );
+      expect(result.board.boards).toContainEqual(userBoard);
+      expect(result.board.boards).toContainEqual(importedFamilyBoard);
+      expect(result.board.boards).not.toContainEqual(staleFamilyBoard);
+      expect(result.board.familyBoardsVersion).toBe(FAMILY_BOARDS_VERSION);
+      expect(result.board.activeBoardId).toBe('user-board');
+      expect(result.board.navHistory).toEqual(['user-board']);
+      expect(result.communicator.activeCommunicatorId).toBe('cboard_default');
+      expect(result._persist).toEqual({ version: 7, rehydrated: true });
+    });
+  });
 });

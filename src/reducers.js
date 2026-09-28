@@ -255,14 +255,15 @@ export const boardMigrations = {
   4: migrateFamilyBoardAsHome,
   5: migrateFamilyBoardAsHome,
   6: migrateFamilyBoardAsHome,
-  7: migrateFamilyBoardAsHome
+  7: migrateFamilyBoardAsHome,
+  8: migrateCodeOwnedFamilyBoards
 };
 
 const config = {
   key: 'root',
   storage: migratingStorage,
   blacklist: ['language'],
-  version: 7,
+  version: 8,
   migrate: createMigrate(boardMigrations, { debug: false })
 };
 
