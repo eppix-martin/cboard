@@ -718,35 +718,35 @@
     "hidden": false,
     "tiles": [
       {
-        "label": "1",
+        "label": "UNO",
         "image": "/symbols/family/numeros/numeros-uno.png",
         "id": "family-numeros-uno",
         "type": "button",
         "borderColor": "blue"
       },
       {
-        "label": "2",
+        "label": "DOS",
         "image": "/symbols/family/numeros/numeros-dos.png",
         "id": "family-numeros-dos",
         "type": "button",
         "borderColor": "blue"
       },
       {
-        "label": "3",
+        "label": "TRES",
         "image": "/symbols/family/numeros/numeros-tres.png",
         "id": "family-numeros-tres",
         "type": "button",
         "borderColor": "blue"
       },
       {
-        "label": "4",
+        "label": "CUATRO",
         "image": "/symbols/family/numeros/numeros-cuatro.png",
         "id": "family-numeros-cuatro",
         "type": "button",
         "borderColor": "blue"
       },
       {
-        "label": "5",
+        "label": "CINCO",
         "image": "/symbols/family/numeros/numeros-cinco.png",
         "id": "family-numeros-cinco",
         "type": "button",

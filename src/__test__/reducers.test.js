@@ -723,4 +723,65 @@ describe('boardMigrations', () => {
       expect(result._persist).toEqual({ version: 9, rehydrated: true });
     });
   });
+
+  describe('migration 11 – refresh family boards with spelled-out numeros labels', () => {
+    it('refreshes a version 10 numeros board and preserves user-owned boards', () => {
+      const staleNumerosBoard = {
+        ...DEFAULT_BOARDS.family.find(board => board.id === 'family-numeros'),
+        tiles: DEFAULT_BOARDS.family
+          .find(board => board.id === 'family-numeros')
+          .tiles.map((tile, index) => ({ ...tile, label: String(index + 1) }))
+      };
+      const userBoard = { id: 'user-board', email: 'user@example.com' };
+      const importedFamilyBoard = {
+        id: 'family-imported',
+        email: 'user@example.com',
+        tiles: [{ id: 'family-imported-tile', label: 'Imported' }]
+      };
+      const state = {
+        _persist: { version: 10, rehydrated: true },
+        board: {
+          boards: [staleNumerosBoard, userBoard, importedFamilyBoard],
+          syncMeta: {},
+          activeBoardId: 'user-board',
+          navHistory: ['user-board'],
+          familyBoardsVersion: FAMILY_BOARDS_VERSION - 1
+        },
+        communicator: {
+          activeCommunicatorId: 'cboard_default',
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'family-root',
+              boards: ['root', 'family-root']
+            }
+          ]
+        }
+      };
+
+      const result = boardMigrations[11](state);
+      const refreshedNumerosBoard = result.board.boards.find(
+        board => board.id === 'family-numeros'
+      );
+
+      expect(refreshedNumerosBoard).toEqual(
+        DEFAULT_BOARDS.family.find(board => board.id === 'family-numeros')
+      );
+      expect(refreshedNumerosBoard.tiles.map(tile => tile.label)).toEqual([
+        'UNO',
+        'DOS',
+        'TRES',
+        'CUATRO',
+        'CINCO'
+      ]);
+      expect(result.board.boards).toContainEqual(userBoard);
+      expect(result.board.boards).toContainEqual(importedFamilyBoard);
+      expect(result.board.boards).not.toContainEqual(staleNumerosBoard);
+      expect(result.board.familyBoardsVersion).toBe(FAMILY_BOARDS_VERSION);
+      expect(result.board.activeBoardId).toBe('user-board');
+      expect(result.board.navHistory).toEqual(['user-board']);
+      expect(result.communicator.activeCommunicatorId).toBe('cboard_default');
+      expect(result._persist).toEqual({ version: 10, rehydrated: true });
+    });
+  });
 });

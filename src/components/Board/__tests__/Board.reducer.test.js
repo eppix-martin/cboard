@@ -281,11 +281,11 @@ describe('reducer', () => {
       'personas/mama': 'MAMÁ',
       'personas/papa': 'PAPÁ',
       'terapias/masajeador': 'AMARILLO',
-      'numeros/numeros-uno': '1',
-      'numeros/numeros-dos': '2',
-      'numeros/numeros-tres': '3',
-      'numeros/numeros-cuatro': '4',
-      'numeros/numeros-cinco': '5'
+      'numeros/numeros-uno': 'UNO',
+      'numeros/numeros-dos': 'DOS',
+      'numeros/numeros-tres': 'TRES',
+      'numeros/numeros-cuatro': 'CUATRO',
+      'numeros/numeros-cinco': 'CINCO'
     };
 
     categories.forEach(category => {
@@ -392,17 +392,17 @@ describe('reducer', () => {
       ])
     );
   });
-  it('keeps the NÚMEROS board tiles ordered from 1 to 5', () => {
+  it('keeps the NÚMEROS board tiles ordered from UNO to CINCO', () => {
     const numerosBoard = DEFAULT_BOARDS.family.find(
       board => board.id === 'family-numeros'
     );
 
     expect(numerosBoard.tiles.map(tile => tile.label)).toEqual([
-      '1',
-      '2',
-      '3',
-      '4',
-      '5'
+      'UNO',
+      'DOS',
+      'TRES',
+      'CUATRO',
+      'CINCO'
     ]);
     expect(numerosBoard.tiles.map(tile => tile.id)).toEqual([
       'family-numeros-uno',
