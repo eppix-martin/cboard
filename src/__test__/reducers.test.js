@@ -593,4 +593,65 @@ describe('boardMigrations', () => {
       expect(result._persist).toEqual({ version: 7, rehydrated: true });
     });
   });
+
+  describe('migration 9 – refresh family boards with numeros', () => {
+    it('refreshes a version 8 family board and preserves user-owned boards', () => {
+      const staleTerapiasBoard = {
+        ...DEFAULT_BOARDS.family.find(board => board.id === 'family-terapias'),
+        tiles: [
+          ...DEFAULT_BOARDS.family
+            .find(board => board.id === 'family-terapias')
+            .tiles.filter(tile => tile.id !== 'family-terapias-pelota')
+        ]
+      };
+      const userBoard = { id: 'user-board', email: 'user@example.com' };
+      const importedFamilyBoard = {
+        id: 'family-imported',
+        email: 'user@example.com',
+        tiles: [{ id: 'family-imported-tile', label: 'Imported' }]
+      };
+      const state = {
+        _persist: { version: 8, rehydrated: true },
+        board: {
+          boards: [staleTerapiasBoard, userBoard, importedFamilyBoard],
+          syncMeta: {},
+          activeBoardId: 'user-board',
+          navHistory: ['user-board'],
+          familyBoardsVersion: FAMILY_BOARDS_VERSION - 1
+        },
+        communicator: {
+          activeCommunicatorId: 'cboard_default',
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'family-root',
+              boards: ['root', 'family-root']
+            }
+          ]
+        }
+      };
+
+      const result = boardMigrations[9](state);
+      const refreshedTerapiasBoard = result.board.boards.find(
+        board => board.id === 'family-terapias'
+      );
+      const numerosBoard = result.board.boards.find(
+        board => board.id === 'family-numeros'
+      );
+
+      expect(refreshedTerapiasBoard).toEqual(
+        DEFAULT_BOARDS.family.find(board => board.id === 'family-terapias')
+      );
+      expect(numerosBoard).toEqual(
+        DEFAULT_BOARDS.family.find(board => board.id === 'family-numeros')
+      );
+      expect(result.board.boards).toContainEqual(userBoard);
+      expect(result.board.boards).toContainEqual(importedFamilyBoard);
+      expect(result.board.familyBoardsVersion).toBe(FAMILY_BOARDS_VERSION);
+      expect(result.board.activeBoardId).toBe('user-board');
+      expect(result.board.navHistory).toEqual(['user-board']);
+      expect(result.communicator.activeCommunicatorId).toBe('cboard_default');
+      expect(result._persist).toEqual({ version: 8, rehydrated: true });
+    });
+  });
 });

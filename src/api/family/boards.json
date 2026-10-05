@@ -55,6 +55,15 @@
         "borderColor": "blue"
       },
       {
+        "label": "NÚMEROS",
+        "image": "/symbols/family/numeros/numeros-cuatro.png",
+        "loadBoard": "family-numeros",
+        "id": "family-root-numeros",
+        "type": "folder",
+        "linkedBoard": true,
+        "borderColor": "blue"
+      },
+      {
         "label": "COLORES",
         "image": "/symbols/family/colores/azul.png",
         "loadBoard": "family-colores",
@@ -687,6 +696,59 @@
         "label": "COCINA",
         "image": "/symbols/family/terapias/cocina.png",
         "id": "family-terapias-cocina",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "PELOTA",
+        "image": "/symbols/family/terapias/pelota.png",
+        "id": "family-terapias-pelota",
+        "type": "button",
+        "borderColor": "blue"
+      }
+    ]
+  },
+  {
+    "id": "family-numeros",
+    "name": "Family NÚMEROS",
+    "author": "Family",
+    "description": "Local family numeros board",
+    "email": "family@example.local",
+    "isPublic": false,
+    "hidden": false,
+    "tiles": [
+      {
+        "label": "1",
+        "image": "/symbols/family/numeros/numeros-uno.png",
+        "id": "family-numeros-uno",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "2",
+        "image": "/symbols/family/numeros/numeros-dos.png",
+        "id": "family-numeros-dos",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "3",
+        "image": "/symbols/family/numeros/numeros-tres.png",
+        "id": "family-numeros-tres",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "4",
+        "image": "/symbols/family/numeros/numeros-cuatro.png",
+        "id": "family-numeros-cuatro",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "5",
+        "image": "/symbols/family/numeros/numeros-cinco.png",
+        "id": "family-numeros-cinco",
         "type": "button",
         "borderColor": "blue"
       }

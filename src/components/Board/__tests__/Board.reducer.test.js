@@ -166,6 +166,15 @@ describe('reducer', () => {
         borderColor: 'blue'
       },
       {
+        id: 'family-root-numeros',
+        loadBoard: 'family-numeros',
+        label: 'NÚMEROS',
+        image: '/symbols/family/numeros/numeros-cuatro.png',
+        type: 'folder',
+        linkedBoard: true,
+        borderColor: 'blue'
+      },
+      {
         id: 'family-root-colores',
         loadBoard: 'family-colores',
         label: 'COLORES',
@@ -224,7 +233,8 @@ describe('reducer', () => {
       dibus: 'blue',
       lugares: 'black',
       personas: 'red',
-      terapias: 'blue'
+      terapias: 'blue',
+      numeros: 'blue'
     };
     const categories = [
       'acciones',
@@ -235,10 +245,18 @@ describe('reducer', () => {
       'dibus',
       'lugares',
       'personas',
-      'terapias'
+      'terapias',
+      'numeros'
     ];
     const folderCoverFiles = {
       cole: ['portada.png']
+    };
+    const tileIdOverrides = {
+      'numeros/numeros-uno': 'family-numeros-uno',
+      'numeros/numeros-dos': 'family-numeros-dos',
+      'numeros/numeros-tres': 'family-numeros-tres',
+      'numeros/numeros-cuatro': 'family-numeros-cuatro',
+      'numeros/numeros-cinco': 'family-numeros-cinco'
     };
     const sharedTiles = {
       cole: [
@@ -262,7 +280,12 @@ describe('reducer', () => {
       'lugares/jardin': 'JARDÍN',
       'personas/mama': 'MAMÁ',
       'personas/papa': 'PAPÁ',
-      'terapias/masajeador': 'AMARILLO'
+      'terapias/masajeador': 'AMARILLO',
+      'numeros/numeros-uno': '1',
+      'numeros/numeros-dos': '2',
+      'numeros/numeros-tres': '3',
+      'numeros/numeros-cuatro': '4',
+      'numeros/numeros-cinco': '5'
     };
 
     categories.forEach(category => {
@@ -277,7 +300,9 @@ describe('reducer', () => {
         const symbolId = path.basename(fileName, '.png');
         const labelOverride = labelOverrides[`${category}/${symbolId}`];
         const expectedTile = {
-          id: `family-${category}-${symbolId}`,
+          id:
+            tileIdOverrides[`${category}/${symbolId}`] ||
+            `family-${category}-${symbolId}`,
           label: labelOverride || symbolId.replace(/-/g, ' ').toUpperCase(),
           image: `/symbols/family/${category}/${fileName}`,
           type: 'button'
@@ -291,6 +316,9 @@ describe('reducer', () => {
         return expectedTile;
       });
       expectedTiles.push(...(sharedTiles[category] || []));
+      expectedTiles.sort((firstTile, secondTile) =>
+        firstTile.id.localeCompare(secondTile.id)
+      );
 
       const actualTiles = familyBoardsById[`family-${category}`].tiles
         .map(tile => ({
@@ -355,9 +383,41 @@ describe('reducer', () => {
           id: 'family-terapias-cocina',
           label: 'COCINA',
           image: '/symbols/family/terapias/cocina.png'
+        }),
+        expect.objectContaining({
+          id: 'family-terapias-pelota',
+          label: 'PELOTA',
+          image: '/symbols/family/terapias/pelota.png'
         })
       ])
     );
+  });
+  it('keeps the NÚMEROS board tiles ordered from 1 to 5', () => {
+    const numerosBoard = DEFAULT_BOARDS.family.find(
+      board => board.id === 'family-numeros'
+    );
+
+    expect(numerosBoard.tiles.map(tile => tile.label)).toEqual([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5'
+    ]);
+    expect(numerosBoard.tiles.map(tile => tile.id)).toEqual([
+      'family-numeros-uno',
+      'family-numeros-dos',
+      'family-numeros-tres',
+      'family-numeros-cuatro',
+      'family-numeros-cinco'
+    ]);
+    expect(numerosBoard.tiles.map(tile => tile.image)).toEqual([
+      '/symbols/family/numeros/numeros-uno.png',
+      '/symbols/family/numeros/numeros-dos.png',
+      '/symbols/family/numeros/numeros-tres.png',
+      '/symbols/family/numeros/numeros-cuatro.png',
+      '/symbols/family/numeros/numeros-cinco.png'
+    ]);
   });
   it('should handle logout', () => {
     const logout = {
