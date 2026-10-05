@@ -984,6 +984,41 @@
         "id": "family-dibus-rubble-y-equipo",
         "type": "button",
         "borderColor": "blue"
+      },
+      {
+        "label": "LATE",
+        "image": "/symbols/family/dibus/late.png",
+        "id": "family-dibus-late",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "SELVA",
+        "image": "/symbols/family/dibus/selva.png",
+        "id": "family-dibus-selva",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "CARS",
+        "image": "/symbols/family/dibus/cars.png",
+        "id": "family-dibus-cars",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "DIANA Y ROMA",
+        "image": "/symbols/family/dibus/diana-y-roma.png",
+        "id": "family-dibus-diana-y-roma",
+        "type": "button",
+        "borderColor": "blue"
+      },
+      {
+        "label": "SPIDEY",
+        "image": "/symbols/family/dibus/spidey.png",
+        "id": "family-dibus-spidey",
+        "type": "button",
+        "borderColor": "blue"
       }
     ]
   }

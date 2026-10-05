@@ -654,4 +654,73 @@ describe('boardMigrations', () => {
       expect(result._persist).toEqual({ version: 8, rehydrated: true });
     });
   });
+
+  describe('migration 10 – refresh family boards with new dibus', () => {
+    it('refreshes a version 9 family board and preserves user-owned boards', () => {
+      const staleDibusBoard = {
+        ...DEFAULT_BOARDS.family.find(board => board.id === 'family-dibus'),
+        tiles: DEFAULT_BOARDS.family
+          .find(board => board.id === 'family-dibus')
+          .tiles.filter(tile => tile.id !== 'family-dibus-spidey')
+      };
+      const userBoard = { id: 'user-board', email: 'user@example.com' };
+      const importedFamilyBoard = {
+        id: 'family-imported',
+        email: 'user@example.com',
+        tiles: [{ id: 'family-imported-tile', label: 'Imported' }]
+      };
+      const state = {
+        _persist: { version: 9, rehydrated: true },
+        board: {
+          boards: [staleDibusBoard, userBoard, importedFamilyBoard],
+          syncMeta: {},
+          activeBoardId: 'user-board',
+          navHistory: ['user-board'],
+          familyBoardsVersion: FAMILY_BOARDS_VERSION - 1
+        },
+        communicator: {
+          activeCommunicatorId: 'cboard_default',
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'family-root',
+              boards: ['root', 'family-root']
+            }
+          ]
+        }
+      };
+
+      const result = boardMigrations[10](state);
+      const refreshedDibusBoard = result.board.boards.find(
+        board => board.id === 'family-dibus'
+      );
+
+      expect(refreshedDibusBoard).toEqual(
+        DEFAULT_BOARDS.family.find(board => board.id === 'family-dibus')
+      );
+      expect(refreshedDibusBoard.tiles).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: 'family-dibus-late', label: 'LATE' }),
+          expect.objectContaining({ id: 'family-dibus-selva', label: 'SELVA' }),
+          expect.objectContaining({ id: 'family-dibus-cars', label: 'CARS' }),
+          expect.objectContaining({
+            id: 'family-dibus-diana-y-roma',
+            label: 'DIANA Y ROMA'
+          }),
+          expect.objectContaining({
+            id: 'family-dibus-spidey',
+            label: 'SPIDEY'
+          })
+        ])
+      );
+      expect(result.board.boards).toContainEqual(userBoard);
+      expect(result.board.boards).toContainEqual(importedFamilyBoard);
+      expect(result.board.boards).not.toContainEqual(staleDibusBoard);
+      expect(result.board.familyBoardsVersion).toBe(FAMILY_BOARDS_VERSION);
+      expect(result.board.activeBoardId).toBe('user-board');
+      expect(result.board.navHistory).toEqual(['user-board']);
+      expect(result.communicator.activeCommunicatorId).toBe('cboard_default');
+      expect(result._persist).toEqual({ version: 9, rehydrated: true });
+    });
+  });
 });
