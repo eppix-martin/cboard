@@ -281,6 +281,7 @@ describe('reducer', () => {
       'personas/mama': 'MAMÁ',
       'personas/papa': 'PAPÁ',
       'terapias/masajeador': 'AMARILLO',
+      'terapias/mas': 'MÁS',
       'numeros/numeros-uno': 'UNO',
       'numeros/numeros-dos': 'DOS',
       'numeros/numeros-tres': 'TRES',
@@ -388,6 +389,11 @@ describe('reducer', () => {
           id: 'family-terapias-pelota',
           label: 'PELOTA',
           image: '/symbols/family/terapias/pelota.png'
+        }),
+        expect.objectContaining({
+          id: 'family-terapias-mas',
+          label: 'MÁS',
+          image: '/symbols/family/terapias/mas.png'
         })
       ])
     );

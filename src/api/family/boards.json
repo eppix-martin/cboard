@@ -705,6 +705,13 @@
         "id": "family-terapias-pelota",
         "type": "button",
         "borderColor": "blue"
+      },
+      {
+        "label": "MÁS",
+        "image": "/symbols/family/terapias/mas.png",
+        "id": "family-terapias-mas",
+        "type": "button",
+        "borderColor": "blue"
       }
     ]
   },

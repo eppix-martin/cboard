@@ -784,4 +784,67 @@ describe('boardMigrations', () => {
       expect(result._persist).toEqual({ version: 10, rehydrated: true });
     });
   });
+
+  describe('migration 12 – add MÁS to terapias', () => {
+    it('refreshes a version 11 terapias board and preserves user-owned boards', () => {
+      const staleTerapiasBoard = {
+        ...DEFAULT_BOARDS.family.find(board => board.id === 'family-terapias'),
+        tiles: DEFAULT_BOARDS.family
+          .find(board => board.id === 'family-terapias')
+          .tiles.filter(tile => tile.id !== 'family-terapias-mas')
+      };
+      const userBoard = { id: 'user-board', email: 'user@example.com' };
+      const importedFamilyBoard = {
+        id: 'family-imported',
+        email: 'user@example.com',
+        tiles: [{ id: 'family-imported-tile', label: 'Imported' }]
+      };
+      const state = {
+        _persist: { version: 11, rehydrated: true },
+        board: {
+          boards: [staleTerapiasBoard, userBoard, importedFamilyBoard],
+          syncMeta: {},
+          activeBoardId: 'user-board',
+          navHistory: ['user-board'],
+          familyBoardsVersion: FAMILY_BOARDS_VERSION - 1
+        },
+        communicator: {
+          activeCommunicatorId: 'cboard_default',
+          communicators: [
+            {
+              id: 'cboard_default',
+              rootBoard: 'family-root',
+              boards: ['root', 'family-root']
+            }
+          ]
+        }
+      };
+
+      const result = boardMigrations[12](state);
+      const refreshedTerapiasBoard = result.board.boards.find(
+        board => board.id === 'family-terapias'
+      );
+
+      expect(refreshedTerapiasBoard).toEqual(
+        DEFAULT_BOARDS.family.find(board => board.id === 'family-terapias')
+      );
+      expect(refreshedTerapiasBoard.tiles).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: 'family-terapias-mas',
+            label: 'MÁS',
+            image: '/symbols/family/terapias/mas.png'
+          })
+        ])
+      );
+      expect(result.board.boards).toContainEqual(userBoard);
+      expect(result.board.boards).toContainEqual(importedFamilyBoard);
+      expect(result.board.boards).not.toContainEqual(staleTerapiasBoard);
+      expect(result.board.familyBoardsVersion).toBe(FAMILY_BOARDS_VERSION);
+      expect(result.board.activeBoardId).toBe('user-board');
+      expect(result.board.navHistory).toEqual(['user-board']);
+      expect(result.communicator.activeCommunicatorId).toBe('cboard_default');
+      expect(result._persist).toEqual({ version: 11, rehydrated: true });
+    });
+  });
 });
